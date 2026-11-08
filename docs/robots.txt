@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xjhony911.github.io/FluentLyrics/sitemap.xml

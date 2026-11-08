@@ -6,10 +6,12 @@
 
 <p align="center">
   <strong>Widget de letras sincronizadas (karaoke) ultra-ligero para Windows 11 y 10.</strong><br>
-  Diseñado para integrarse estáticamente a tu barra de tareas, flotar libremente o lucirse como un aesthetic widget en tu fondo de escritorio.
+  Diseñado para integrarse estáticamente a tu barra de tareas, flotar libremente o lucirse como un aesthetic widget en tu fondo de escritorio.<br>
+  🌐 <strong><a href="https://xjhony911.github.io/FluentLyrics/">Visita la Web Oficial &amp; Demo en Vivo</a></strong>
 </p>
 
 <p align="center">
+  <a href="https://xjhony911.github.io/FluentLyrics/"><img src="https://img.shields.io/badge/Web-Oficial-00F0FF?style=for-the-badge&logo=googlechrome" alt="Web Oficial" /></a>
   <a href="https://github.com/xJhony911/FluentLyrics/releases"><img src="https://img.shields.io/badge/Release-v1.4.1-00F0FF?style=for-the-badge&logo=github" alt="Release v1.4.1" /></a>
   <img src="https://img.shields.io/badge/.NET-9.0-purple?style=for-the-badge&logo=dotnet" alt=".NET 9" />
   <img src="https://img.shields.io/badge/Platform-Windows%2011%20%2F%2010-0078D4?style=for-the-badge&logo=windows11" alt="Windows" />

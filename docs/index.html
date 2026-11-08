@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- SEO Primary Meta Tags -->
+  <title>FluentLyrics | Letras de Spotify en Barra de Tareas & Escritorio para Windows 11</title>
+  <meta name="title" content="FluentLyrics | Letras de Spotify en Barra de Tareas & Escritorio para Windows 11" />
+  <meta name="description" content="Descarga FluentLyrics: el widget de letras sincronizadas (karaoke) de Spotify para la barra de tareas y escritorio en Windows 11 y 10. Ultra-ligero (<25MB RAM), modo karaoke Word Highlight, One Word TikTok y RGB Chroma." />
+  <meta name="keywords" content="spotify lyrics taskbar windows 11, letras spotify barra de tareas, desktop lyrics windows 11, karaoke spotify windows, fluentlyrics, floating lyrics spotify, taskbar lyrics, letras spotify escritorio, widget letras spotify windows, fluentflyout letras" />
+  <meta name="author" content="Jonathan Acosta (xJhony911)" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://xjhony911.github.io/FluentLyrics/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://xjhony911.github.io/FluentLyrics/" />
+  <meta property="og:title" content="FluentLyrics - Letras de Spotify en tu Barra de Tareas y Escritorio (Windows 11)" />
+  <meta property="og:description" content="Widget de letras sincronizadas ultra-ligero para Windows 11. Word Highlight, One Word TikTok pop, RGB Chroma y puro texto flotante con menos de 25MB de RAM." />
+  <meta property="og:image" content="https://xjhony911.github.io/FluentLyrics/assets/banner.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://xjhony911.github.io/FluentLyrics/" />
+  <meta property="twitter:title" content="FluentLyrics - Letras sincronizadas en la Barra de Tareas de Windows 11" />
+  <meta property="twitter:description" content="Widget nativo de letras de Spotify para Windows 11 y 10. Menos de 25MB de RAM, modo karaoke de palabra resaltada y RGB Chroma." />
+  <meta property="twitter:image" content="https://xjhony911.github.io/FluentLyrics/assets/banner.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/icon.ico" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- JSON-LD Structured Data for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "FluentLyrics",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "MultimediaApplication",
+    "description": "Ultra-lightweight Spotify synchronized lyrics widget for Windows 11 and 10 taskbar and desktop with Word Highlight karaoke, TikTok one-word pop, and RGB Chroma.",
+    "url": "https://xjhony911.github.io/FluentLyrics/",
+    "downloadUrl": "https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics-Setup-v1.4.1.exe",
+    "softwareVersion": "1.4.1",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Jonathan Acosta",
+      "url": "https://github.com/xJhony911"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Background Ambient Glows -->
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-magenta"></div>
+  <div class="ambient-grid"></div>
+
+  <!-- Header / Navigation -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand">
+        <img src="assets/logo.png" alt="FluentLyrics Logo" class="brand-logo" width="34" height="34" />
+        <span class="brand-name">FluentLyrics</span>
+        <span class="version-tag">v1.4.1</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#features">Características</a>
+        <a href="#demo">Demo en Vivo</a>
+        <a href="#performance">Rendimiento</a>
+        <a href="#screenshots">Capturas</a>
+        <a href="#faq">Preguntas</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/xJhony911/FluentLyrics" target="_blank" rel="noopener" class="btn btn-github">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="#download" class="btn btn-primary">
+          <span>Descargar</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      
+      <!-- Pill announcement -->
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        <span>Actualización v1.4.1: Menús Oscuros, Re-sync instantáneo &amp; Desktop Widget</span>
+      </div>
+
+      <!-- Main Heading -->
+      <h1 class="hero-title">
+        Tus canciones con letras sincronizadas en la <span class="text-neon-cyan">Barra de Tareas</span> y <span class="text-neon-magenta">Escritorio</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        El widget de letras tipo karaoke más ligero para Windows 11 y 10. Diseñado como el compañero perfecto de FluentFlyouts: 
+        <strong>puro texto flotante</strong>, resaltado de palabras al cantar, modo TikTok y RGB Chroma con <strong>menos de 25 MB de RAM</strong>.
+      </p>
+
+      <!-- CTA Buttons -->
+      <div class="hero-cta-group" id="download">
+        <a href="https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics-Setup-v1.4.1.exe" class="btn btn-cta btn-glow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <div>
+            <span class="cta-primary-text">Descargar Instalador</span>
+            <span class="cta-sub-text">FluentLyrics-Setup-v1.4.1.exe • 64-bit</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics.exe" class="btn btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Versión Portable (.exe)</span>
+        </a>
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="hero-badges">
+        <span class="badge-item">⚡ &lt; 25 MB RAM</span>
+        <span class="badge-item">🎯 0.1% CPU</span>
+        <span class="badge-item">🔒 Sin cuentas ni API Keys</span>
+        <span class="badge-item">🪟 Windows 11 &amp; 10</span>
+        <span class="badge-item">💻 100% Código Abierto</span>
+      </div>
+
+      <!-- Interactive Widget Demo Simulator -->
+      <div class="demo-wrapper" id="demo">
+        <div class="demo-card">
+          <div class="demo-card-header">
+            <div class="demo-title-group">
+              <span class="demo-status-light"></span>
+              <span class="demo-card-title">SIMULADOR EN VIVO DE FLUENTLYRICS</span>
+            </div>
+            
+            <div class="demo-mode-selectors">
+              <button class="demo-mode-btn active" data-mode="highlight">✨ Palabra Resaltada</button>
+              <button class="demo-mode-btn" data-mode="oneword">⚡ One Word (TikTok)</button>
+              <button class="demo-mode-btn" data-mode="desktop">🖥️ Modo Escritorio</button>
+              <button class="demo-mode-btn" data-mode="rgb">🌈 Modo RGB</button>
+            </div>
+          </div>
+
+          <!-- Virtual Taskbar / Display Canvas -->
+          <div class="virtual-taskbar" id="virtualTaskbar">
+            
+            <!-- FluentFlyout Mockup Companion -->
+            <div class="flyout-companion">
+              <div class="flyout-art">♫</div>
+              <div class="flyout-info">
+                <span class="flyout-song">Dayflower</span>
+                <span class="flyout-artist">Cathedral Bells</span>
+              </div>
+              <div class="flyout-controls">⏮ ⏯ ⏭</div>
+            </div>
+
+            <!-- FluentLyrics Live Display Box -->
+            <div class="fluentlyrics-box" id="fluentBox">
+              <span class="widget-status-dot" id="widgetDot"></span>
+
+              <div class="lyrics-text-container">
+                <div class="lyric-prev" id="lyricPrev">And in the stillness of the midnight sky...</div>
+                <div class="lyric-active" id="lyricActive">
+                  <!-- Injected via JavaScript for Word-by-Word animation -->
+                </div>
+                <div class="lyric-next" id="lyricNext">Waiting for the morning sun to rise...</div>
+              </div>
+
+              <!-- Hover mini controls -->
+              <div class="widget-hover-controls">
+                <span title="Modo Escritorio">🖥️</span>
+                <span title="Anclar a barra">📌</span>
+                <span title="Re-sincronizar">🔄</span>
+                <span title="Ajustes">⚙️</span>
+              </div>
+            </div>
+
+            <!-- Virtual System Tray -->
+            <div class="virtual-tray">
+              <span>⚡ 🔊 📶 12:00</span>
+            </div>
+
+          </div>
+          
+          <div class="demo-caption">
+            <span>💡 <strong>Prueba los botones de arriba:</strong> Cambia de modo para ver cómo reacciona en tiempo real. Cero lag, tipografía limpia y sin bordes molestos.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">CARACTERÍSTICAS ÚNICAS</span>
+        <h2 class="section-title">Diseñado para ser invisible, potente y ultra-estético</h2>
+        <p class="section-desc">FluentLyrics no es otra aplicación pesada hecha con navegadores web. Está escrita en C# nativo para integrarse al sistema como un guante.</p>
+      </div>
+
+      <div class="features-grid">
+        
+        <div class="feature-card">
+          <div class="feature-icon-box">📌</div>
+          <h3 class="feature-title">Anclaje Estático a la Barra de Tareas</h3>
+          <p class="feature-text">Se alinea a la perfección junto al reloj y al lado de FluentFlyouts. Su tamaño inteligente se adapta para no tapar los iconos de tus aplicaciones abiertas.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🎤</div>
+          <h3 class="feature-title">Modo Palabra Resaltada (Apple/Spotify)</h3>
+          <p class="feature-text">Toda la frase permanece visible en pantalla, pero la palabra exacta que el cantante pronuncia <strong>crece de tamaño y resplandece</strong> al compás de la voz.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">⚡</div>
+          <h3 class="feature-title">Modo One Word (TikTok / Reels)</h3>
+          <p class="feature-text">Las palabras van saliendo una por una con una animación pop dinámica y enérgica al compás del ritmo. Ideal para cantar en karaoke.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🖥️</div>
+          <h3 class="feature-title">Modo Fondo de Escritorio Multilínea</h3>
+          <p class="feature-text">Transforma FluentLyrics en un widget estético de gran formato para tu wallpaper, con estrofa anterior atenuada, frase activa y siguiente estrofa.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🌈</div>
+          <h3 class="feature-title">Modo RGB Chroma con Cero Lag</h3>
+          <p class="feature-text">Ciclo de color continuo cyberpunk / neón en tiempo real. Utiliza un algoritmo HSV-to-RGB sin recolección de basura para mantener 0% de CPU.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🪟</div>
+          <h3 class="feature-title">100% Puro Texto Flotante</h3>
+          <p class="feature-text">Suprime completamente los marcos y bordes nativos de DWM en Windows 11. Nada de bordes grises o cajas oscuras si solo deseas ver las letras flotar.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🔄</div>
+          <h3 class="feature-title">Re-sync y Reinicio Instantáneo</h3>
+          <p class="feature-text">Si Spotify cambia de canción rápidamente o la sesión multimedia se desfasa, un solo clic en el botón <strong>🔄</strong> reactiva la detección y recarga las letras.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-box">🔒</div>
+          <h3 class="feature-title">Cero Cuentas ni API Keys</h3>
+          <p class="feature-text">No necesitas registrarte, crear aplicaciones de Spotify Developer ni pegar tokens. Escucha directamente la API nativa GSMTC de Windows.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Comparison -->
+  <section class="section section-darker" id="performance">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">BENCHMARK DE RENDIMIENTO</span>
+        <h2 class="section-title">¿Por qué FluentLyrics supera a cualquier otra app?</h2>
+        <p class="section-desc">Comparamos el consumo real medido en Windows 11 frente a las aplicaciones habituales de letras basadas en Electron o WebViews.</p>
+      </div>
+
+      <div class="table-container">
+        <table class="benchmark-table">
+          <thead>
+            <tr>
+              <th>Métrica</th>
+              <th class="col-highlight">FluentLyrics (C# .NET 9)</th>
+              <th>Apps basadas en Electron</th>
+              <th>Rainmeter + Plugins</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Consumo de Memoria RAM</strong></td>
+              <td class="col-highlight text-neon-cyan"><strong>~22.4 MB</strong></td>
+              <td>180 MB - 350 MB</td>
+              <td>80 MB - 160 MB</td>
+            </tr>
+            <tr>
+              <td><strong>Uso de CPU en Reposo</strong></td>
+              <td class="col-highlight text-neon-cyan"><strong>0.0% - 0.1%</strong></td>
+              <td>1.5% - 4.5%</td>
+              <td>0.8% - 2.0%</td>
+            </tr>
+            <tr>
+              <td><strong>Integración con Windows</strong></td>
+              <td class="col-highlight text-neon-cyan"><strong>Nativa (DWM &amp; GSMTC)</strong></td>
+              <td>Webview Emulado</td>
+              <td>Forks de terceros</td>
+            </tr>
+            <tr>
+              <td><strong>Borde Flotante DWM 100% Limpio</strong></td>
+              <td class="col-highlight text-neon-cyan"><strong>Sí (Sin bordes nativos)</strong></td>
+              <td>Raras veces / Bordes negros</td>
+              <td>Depende del skin</td>
+            </tr>
+            <tr>
+              <td><strong>Configuración Necesaria</strong></td>
+              <td class="col-highlight text-neon-cyan"><strong>0 Cuentas / 1-Clic</strong></td>
+              <td>Tokens / Login de Spotify</td>
+              <td>Instalar plugins / Spicetify</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots Gallery -->
+  <section class="section" id="screenshots">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">GALERÍA VISUAL</span>
+        <h2 class="section-title">Elegancia minimalista en cada detalle</h2>
+        <p class="section-desc">Capturas de pantalla reales en Windows 11 mostrando los diferentes modos de visualización.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-card">
+          <img src="assets/preview-desktop.png" alt="Modo Fondo de Escritorio con Word Highlight" class="gallery-img" />
+          <div class="gallery-info">
+            <h4>Modo Fondo de Escritorio (Desktop Widget)</h4>
+            <p>Frase completa con la palabra activa ampliada en tiempo real y vista contextual de estrofas.</p>
+          </div>
+        </div>
+
+        <div class="gallery-card">
+          <img src="assets/preview-taskbar.png" alt="Modo Integrado a la Barra de Tareas Windows 11" class="gallery-img" />
+          <div class="gallery-info">
+            <h4>Modo Barra de Tareas (Windows 11)</h4>
+            <p>Alineación estática al lado de FluentFlyouts con puro texto flotante sin marcos invasivos.</p>
+          </div>
+        </div>
+
+        <div class="gallery-card">
+          <img src="assets/preview-settings.png" alt="Centro de Ajustes Cyberpunk" class="gallery-img" />
+          <div class="gallery-info">
+            <h4>Centro de Ajustes Cyberpunk</h4>
+            <p>Personalización de colores neón, switches modernos, fuentes y modos con previsualización en vivo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section section-darker" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">PREGUNTAS FRECUENTES</span>
+        <h2 class="section-title">Todo lo que necesitas saber</h2>
+      </div>
+
+      <div class="faq-accordion">
+        
+        <details class="faq-item">
+          <summary class="faq-question">¿Necesito iniciar sesión con mi cuenta de Spotify o crear una API Key?</summary>
+          <div class="faq-answer">
+            <p><strong>No.</strong> FluentLyrics utiliza la interfaz nativa del sistema operativo Windows llamada <code>GSMTC</code> (System Media Transport Controls). Esto significa que detecta de forma automática la canción que Spotify está reproduciendo sin pedirte contraseñas, tokens de desarrollador ni permisos especiales.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">¿Funciona con otros reproductores además de Spotify Desktop?</summary>
+          <div class="faq-answer">
+            <p><strong>Sí.</strong> Siempre que el reproductor informe a Windows de su reproducción multimedia (como Spotify Web en Chrome/Edge, YouTube Music Desktop, Apple Music para Windows, Tidal, etc.), FluentLyrics podrá sincronizar las letras.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">¿Cómo hago para que solo se vean las letras sin ningún fondo ni borde?</summary>
+          <div class="faq-answer">
+            <p>Ve a <strong>Ajustes (⚙️)</strong> y en la pestaña <em>Visual &amp; RGB</em>, selecciona en Efecto de Fondo: <code>Transparent (Puro Texto Flotante)</code> y asegúrate de que la casilla <em>"Mostrar borde exterior"</em> esté desmarcada. FluentLyrics aplicará la supresión de bordes de Windows 11 para dejar únicamente la tipografía luminosa.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">¿Qué hago si una canción no sincroniza o la barra se traba?</summary>
+          <div class="faq-answer">
+            <p>En los controles flotantes del widget tienes un botón <strong>🔄</strong> (o haciendo clic derecho en el icono de la bandeja y seleccionando <em>"Sincronizar de nuevo"</em>). Al presionarlo, FluentLyrics fuerza la re-detección de Windows y recarga la letra de LRCLIB en cuestión de milisegundos.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">¿Es gratis y de código abierto?</summary>
+          <div class="faq-answer">
+            <p><strong>100% gratuito y de código abierto</strong> bajo la licencia MIT. Puedes revisar todo el código fuente, colaborar o compilarlo tú mismo en nuestro repositorio oficial de GitHub.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Call to Action -->
+  <section class="cta-banner-section">
+    <div class="container cta-banner-container">
+      <h2 class="cta-banner-title">Lleva la música de Spotify al siguiente nivel en tu PC</h2>
+      <p class="cta-banner-desc">Instala FluentLyrics en menos de 10 segundos o descarga el ejecutable portable para usarlo sin instalar nada.</p>
+      
+      <div class="hero-cta-group">
+        <a href="https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics-Setup-v1.4.1.exe" class="btn btn-cta btn-glow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <div>
+            <span class="cta-primary-text">Descargar FluentLyrics v1.4.1</span>
+            <span class="cta-sub-text">Instalador oficial para Windows 11 / 10</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-left">
+        <img src="assets/logo.png" alt="FluentLyrics Logo" width="24" height="24" />
+        <span class="footer-brand">FluentLyrics</span>
+        <span class="footer-copy">© 2026 Jonathan Acosta (<a href="https://github.com/xJhony911" target="_blank" rel="noopener">xJhony911</a>). Licencia MIT.</span>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://github.com/xJhony911/FluentLyrics" target="_blank" rel="noopener">Repositorio GitHub</a>
+        <a href="https://github.com/xJhony911/FluentLyrics/releases" target="_blank" rel="noopener">Todas las Versiones</a>
+        <a href="https://github.com/xJhony911/FluentLyrics/issues" target="_blank" rel="noopener">Reportar un Error</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script for Live Simulator & Interactions -->
+  <script src="script.js"></script>
+</body>
+</html>
