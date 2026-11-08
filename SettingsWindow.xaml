@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Ajustes de FluentLyrics" 
-        Height="540" Width="440"
+        Height="620" Width="460"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#1C1C1C"
@@ -81,12 +81,36 @@
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,14">
             <TextBlock Text="⚙ Configuración de FluentLyrics" FontSize="18" FontWeight="Bold" Foreground="#1DB954"/>
-            <TextBlock Text="Personaliza el aspecto, efectos y sincronización a tu gusto." FontSize="12" Foreground="#888888" Margin="0,2,0,0"/>
+            <TextBlock Text="Personaliza el aspecto, efectos y anclaje a la barra de tareas." FontSize="12" Foreground="#888888" Margin="0,2,0,0"/>
         </StackPanel>
 
         <!-- Scrollable Options -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="0,0,8,0">
+
+                <!-- Sección: Anclaje a Barra de Tareas -->
+                <Border Background="#242424" CornerRadius="8" Padding="12" Margin="0,0,0,14" BorderBrush="#33FFFFFF" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="📌 Anclaje a la Barra de Tareas (Windows 11)" FontWeight="Bold" FontSize="14" Foreground="#1DB954" Margin="0,0,0,4"/>
+                        <TextBlock Text="Se ajusta estáticamente a la barra y no se puede mover por error." FontSize="11" Foreground="#888888" Margin="0,0,0,8"/>
+                        
+                        <CheckBox x:Name="ChkTaskbarDock" Content="Anclar automáticamente a la barra de tareas"/>
+                        <CheckBox x:Name="ChkTaskbarCompact" Content="Modo compacto (1 sola línea para ahorrar espacio)" Margin="0,2,0,6"/>
+
+                        <Grid Margin="0,4,0,2">
+                            <Label Content="Distancia desde la bandeja del sistema (Offset px):"/>
+                            <TextBlock x:Name="TxtTaskbarOffsetVal" Text="220 px" Foreground="#1DB954" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Slider x:Name="SliderTaskbarOffset" Minimum="0" Maximum="600" Value="220" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SliderTaskbarOffset_ValueChanged"/>
+
+                        <Grid Margin="0,4,0,2">
+                            <Label Content="Ancho máximo en la barra (evita tapar aplicaciones):"/>
+                            <TextBlock x:Name="TxtTaskbarMaxWVal" Text="340 px" Foreground="#1DB954" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+                        <Slider x:Name="SliderTaskbarMaxW" Minimum="180" Maximum="500" Value="340" TickFrequency="20" IsSnapToTickEnabled="True" ValueChanged="SliderTaskbarMaxW_ValueChanged"/>
+                    </StackPanel>
+                </Border>
+
                 <!-- Tema y Fondo -->
                 <Label Content="Efecto de Fondo:"/>
                 <ComboBox x:Name="CmbTheme">
@@ -130,7 +154,7 @@
                 </ComboBox>
 
                 <!-- Checkboxes de Comportamiento -->
-                <CheckBox x:Name="ChkNextLine" Content="Mostrar previsualización de la siguiente estrofa"/>
+                <CheckBox x:Name="ChkNextLine" Content="Mostrar previsualización de la siguiente estrofa (modo flotante)"/>
                 <CheckBox x:Name="ChkGlow" Content="Efecto de resplandor / brillo en la letra activa"/>
                 <CheckBox x:Name="ChkAutoHide" Content="Ocultar automáticamente al pausar la música"/>
                 <CheckBox x:Name="ChkClickThrough" Content="Modo Fantasma (clics atraviesan el widget)"/>

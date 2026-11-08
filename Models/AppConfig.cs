@@ -12,13 +12,19 @@ namespace FluentLyrics.Models
         public bool IsLocked { get; set; } = false;
         public bool IsClickThrough { get; set; } = false;
 
+        // Taskbar Integration
+        public bool IsTaskbarDocked { get; set; } = false;
+        public double TaskbarOffsetX { get; set; } = 220; // Distance to the left of the system tray (FluentFlyout companion)
+        public double TaskbarMaxWidth { get; set; } = 340; // Max allowed width so it doesn't crowd open apps
+        public bool TaskbarCompactSingleLine { get; set; } = true; // Use single-line compact height in taskbar
+
         // Background / Blur: "Acrylic", "Mica", "DarkGlass", "LightGlass", "Transparent"
         public string ThemeMode { get; set; } = "DarkGlass";
         public double BackgroundOpacity { get; set; } = 0.85;
 
         // Typography
         public string FontFamily { get; set; } = "Segoe UI Variable Display";
-        public double FontSize { get; set; } = 16.0;
+        public double FontSize { get; set; } = 15.0;
         public string FontWeight { get; set; } = "SemiBold";
 
         // Colors

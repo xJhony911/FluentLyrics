@@ -23,6 +23,12 @@ namespace FluentLyrics
 
         private void LoadValues()
         {
+            // Taskbar Docking
+            ChkTaskbarDock.IsChecked = _config.IsTaskbarDocked;
+            ChkTaskbarCompact.IsChecked = _config.TaskbarCompactSingleLine;
+            SliderTaskbarOffset.Value = _config.TaskbarOffsetX;
+            SliderTaskbarMaxW.Value = _config.TaskbarMaxWidth;
+
             // Theme
             SelectComboByTag(CmbTheme, _config.ThemeMode);
             SliderOpacity.Value = _config.BackgroundOpacity;
@@ -69,6 +75,22 @@ namespace FluentLyrics
             return defaultVal;
         }
 
+        private void SliderTaskbarOffset_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (TxtTaskbarOffsetVal != null)
+            {
+                TxtTaskbarOffsetVal.Text = $"{(int)e.NewValue} px";
+            }
+        }
+
+        private void SliderTaskbarMaxW_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (TxtTaskbarMaxWVal != null)
+            {
+                TxtTaskbarMaxWVal.Text = $"{(int)e.NewValue} px";
+            }
+        }
+
         private void SliderOpacity_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (TxtOpacityVal != null)
@@ -96,11 +118,12 @@ namespace FluentLyrics
 
         private void BtnResetPosition_Click(object sender, RoutedEventArgs e)
         {
+            _config.IsTaskbarDocked = false;
             _config.WindowX = -1;
             _config.WindowY = -1;
             ConfigService.Save(_config);
             _mainWindow.ApplyConfig();
-            WpfMessageBox.Show("Posición restablecida al lado de la barra de tareas.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("Posición restablecida al lado de la barra de tareas en modo flotante.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -110,6 +133,13 @@ namespace FluentLyrics
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            // Taskbar Docking
+            _config.IsTaskbarDocked = ChkTaskbarDock.IsChecked ?? false;
+            _config.TaskbarCompactSingleLine = ChkTaskbarCompact.IsChecked ?? true;
+            _config.TaskbarOffsetX = SliderTaskbarOffset.Value;
+            _config.TaskbarMaxWidth = SliderTaskbarMaxW.Value;
+
+            // Visuals
             _config.ThemeMode = GetSelectedTag(CmbTheme, "DarkGlass");
             _config.BackgroundOpacity = SliderOpacity.Value;
             _config.ActiveTextColor = GetSelectedTag(CmbActiveColor, "#1DB954");

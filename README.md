@@ -21,13 +21,14 @@
 
 ## ✨ Características Principales
 
+- 📌 **Modo Integrado a la Barra de Tareas (Windows 11):** Se ancla automáticamente al tamaño y altura de la barra de tareas de Windows. Permanece estático, sin riesgo de ser arrastrado por error, y adapta su ancho inteligentemente si la barra de tareas se llena de aplicaciones abiertas para nunca tapar tus programas.
 - ⚡ **Ultra-ligero y Eficiente:** Desarrollado en C# .NET nativo con aceleración por hardware DWM. Nada de Electron ni navegadores embebidos pesados. Consume menos de 30 MB de memoria RAM y 0.0% de CPU en reposo.
 - 🎶 **Cero configuración de cuentas:** No necesitas crear API Keys de Spotify ni iniciar sesión en la web. Utiliza la API nativa de Windows **GSMTC** (`Windows.Media.Control`), compatible con Spotify Desktop, Spotify Web, YouTube Music y cualquier reproductor de Windows.
 - 🎤 **Letras Sincronizadas (Karaoke):** Conexión con **LRCLIB** para obtener letras sincronizadas línea a línea con interpolación de milisegundos en tiempo real.
 - 💾 **Caché Inteligente sin conexión:** Guarda las letras reproducidas en disco para cargarlas al instante sin volver a consultar internet.
 - 🪟 **Diseño Fluent Windows 11:** Efectos de desenfoque **Acrylic Blur**, **Mica**, o modo **Completamente Transparente** (solo las letras flotando sobre la barra).
 - 👻 **Modo Fantasma (Click-Through):** Al activarlo, el widget se vuelve traspasable al ratón para que puedas hacer clic en la barra de tareas o ventanas que estén detrás sin que el widget interfiera.
-- 🔒 **Bloqueo de posición:** Arrástralo a cualquier posición (al lado de FluentFlyouts, centrado, o arriba) y bloquéalo para evitar moverlo por error.
+- 🔒 **Bloqueo y Posicionamiento Libre:** Si prefieres usarlo como widget flotante, arrástralo donde quieras y bloquéalo con un clic.
 - ⚙️ **Panel de Personalización en vivo:** Cambia colores, tamaño de letra, opacidad de fondo, alineación y desfase temporal (offset ± ms).
 - 🕒 **Auto-ocultar:** Se puede configurar para ocultarse automáticamente cuando la música se detiene.
 
@@ -36,7 +37,7 @@
 ## 🚀 Instalación y Uso
 
 ### Opción 1: Instalador Automático (Recomendado)
-1. Descarga `FluentLyrics-Setup-v1.0.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
+1. Descarga `FluentLyrics-Setup-v1.1.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
 2. Ejecuta el instalador. Puedes elegir que inicie automáticamente al encender Windows.
 
 ### Opción 2: Versión Portable

@@ -28,7 +28,7 @@
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Width" Value="24"/>
             <Setter Property="Height" Value="24"/>
-            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Margin" Value="1,0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -47,7 +47,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="4">
+    <Grid x:Name="RootGrid" Margin="4">
         <!-- Main Container Card -->
         <Border x:Name="CardBorder" 
                 CornerRadius="14" 
@@ -68,10 +68,10 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Mini Indicator / Status Icon -->
-                <Grid Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0">
-                    <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="#1DB954">
+                <Grid x:Name="StatusDotContainer" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0">
+                    <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#1DB954">
                         <Ellipse.Effect>
-                            <DropShadowEffect Color="#1DB954" BlurRadius="8" ShadowDepth="0"/>
+                            <DropShadowEffect Color="#1DB954" BlurRadius="6" ShadowDepth="0"/>
                         </Ellipse.Effect>
                     </Ellipse>
                 </Grid>
@@ -82,7 +82,7 @@
                     <TextBlock x:Name="TxtActiveLyric"
                                Text="FluentLyrics • Esperando música..."
                                FontFamily="Segoe UI Variable Display"
-                               FontSize="15"
+                               FontSize="14"
                                FontWeight="SemiBold"
                                Foreground="#1DB954"
                                TextTrimming="CharacterEllipsis"
@@ -97,7 +97,7 @@
                     <TextBlock x:Name="TxtNextLyric"
                                Text=""
                                FontFamily="Segoe UI Variable Text"
-                               FontSize="12"
+                               FontSize="11"
                                Foreground="#88FFFFFF"
                                TextTrimming="CharacterEllipsis"
                                TextAlignment="Center"
@@ -106,13 +106,17 @@
                                Visibility="Visible"/>
                 </StackPanel>
 
-                <!-- Right: Hover Controls (Settings, Lock, Close) -->
+                <!-- Right: Hover Controls (Dock, Lock, Settings, Hide) -->
                 <StackPanel x:Name="ControlsPanel" 
                             Grid.Column="2" 
                             Orientation="Horizontal" 
                             VerticalAlignment="Center" 
                             Opacity="0"
-                            Margin="8,0,0,0">
+                            Margin="6,0,0,0">
+
+                    <Button x:Name="BtnDock" Style="{StaticResource WidgetIconButton}" ToolTip="Anclar/Desanclar de la barra de tareas" Click="BtnDock_Click">
+                        <TextBlock x:Name="IconDock" Text="📌" FontSize="11"/>
+                    </Button>
                     
                     <Button x:Name="BtnLock" Style="{StaticResource WidgetIconButton}" ToolTip="Bloquear/Desbloquear posición" Click="BtnLock_Click">
                         <TextBlock x:Name="IconLock" Text="🔓" FontSize="11"/>

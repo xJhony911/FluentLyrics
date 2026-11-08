@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using FluentLyrics.Models;
 using FluentLyrics.Services;
 
@@ -14,6 +15,7 @@ using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
+using WpfMessageBox = System.Windows.MessageBox;
 
 namespace FluentLyrics
 {
@@ -37,6 +39,8 @@ namespace FluentLyrics
 
             _syncTimer.Interval = TimeSpan.FromMilliseconds(50);
             _syncTimer.Tick += SyncTimer_Tick;
+
+            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
         }
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
@@ -56,21 +60,35 @@ namespace FluentLyrics
         {
             _config = ConfigService.Load();
 
-            // Sizing and positioning
-            Width = _config.WindowWidth;
-            Height = _config.WindowHeight;
-
-            if (_config.WindowX >= 0 && _config.WindowY >= 0)
+            if (_config.IsTaskbarDocked)
             {
-                Left = _config.WindowX;
-                Top = _config.WindowY;
+                // Taskbar Docked Mode: Auto-fits height, width constraint, static locked position
+                AlignToTaskbar();
             }
             else
             {
-                // Default position: above taskbar on the right side (companion to media widget)
-                var workArea = SystemParameters.WorkArea;
-                Left = workArea.Right - Width - 120;
-                Top = workArea.Bottom - Height - 12;
+                // Free / Floating Mode: user can drag or restore position
+                RootGrid.Margin = new Thickness(4);
+                CardBorder.CornerRadius = new CornerRadius(14);
+                CardBorder.Padding = new Thickness(12, 4, 12, 4);
+
+                Width = _config.WindowWidth;
+                Height = _config.WindowHeight;
+
+                if (_config.WindowX >= 0 && _config.WindowY >= 0)
+                {
+                    Left = _config.WindowX;
+                    Top = _config.WindowY;
+                }
+                else
+                {
+                    var workArea = SystemParameters.WorkArea;
+                    Left = workArea.Right - Width - 120;
+                    Top = workArea.Bottom - Height - 12;
+                }
+
+                TxtNextLyric.Visibility = _config.ShowNextLine ? Visibility.Visible : Visibility.Collapsed;
+                IconDock.Foreground = new SolidColorBrush(Color.FromArgb(187, 255, 255, 255));
             }
 
             Topmost = _config.AlwaysOnTop;
@@ -83,8 +101,8 @@ namespace FluentLyrics
             }
             catch { }
 
-            TxtActiveLyric.FontSize = _config.FontSize;
-            TxtNextLyric.FontSize = Math.Max(10, _config.FontSize - 3);
+            TxtActiveLyric.FontSize = _config.IsTaskbarDocked ? Math.Min(14, _config.FontSize) : _config.FontSize;
+            TxtNextLyric.FontSize = Math.Max(10, TxtActiveLyric.FontSize - 3);
 
             // Alignment
             var align = _config.TextAlignment.ToLowerInvariant() switch
@@ -105,7 +123,7 @@ namespace FluentLyrics
                 if (GlowEffect != null)
                 {
                     GlowEffect.Color = ((SolidColorBrush)activeBrush).Color;
-                    GlowEffect.Opacity = _config.EnableTextGlow ? 0.5 : 0.0;
+                    GlowEffect.Opacity = _config.EnableTextGlow ? 0.45 : 0.0;
                 }
             }
             catch { }
@@ -117,17 +135,74 @@ namespace FluentLyrics
             }
             catch { }
 
-            TxtNextLyric.Visibility = _config.ShowNextLine ? Visibility.Visible : Visibility.Collapsed;
+            if (!_config.IsTaskbarDocked || !_config.TaskbarCompactSingleLine)
+            {
+                TxtNextLyric.Visibility = _config.ShowNextLine ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                TxtNextLyric.Visibility = Visibility.Collapsed;
+            }
+
             TxtNextLyric.Opacity = _config.NextLineOpacity;
 
             // Background & Blur
             ApplyThemeBackground(_config.ThemeMode, _config.BackgroundOpacity);
 
             // Lock icon state
-            IconLock.Text = _config.IsLocked ? "🔒" : "🔓";
+            IconLock.Text = _config.IsLocked || _config.IsTaskbarDocked ? "🔒" : "🔓";
 
             // Click-through
             WindowHelper.SetClickThrough(this, _config.IsClickThrough);
+        }
+
+        private void AlignToTaskbar()
+        {
+            if (WindowHelper.GetTaskbarMetrics(this, out double tbLeft, out double tbTop, out double tbHeight, out double trayLeft))
+            {
+                // 1. Auto-adjust height to taskbar (typical Windows 11 taskbar is 48px)
+                double targetHeight = Math.Max(34, tbHeight - 8);
+                Height = targetHeight;
+                Top = tbTop + (tbHeight - targetHeight) / 2;
+
+                // 2. Width constraint to avoid overflowing or crowding open app icons
+                double targetWidth = Math.Min(_config.TaskbarMaxWidth, Math.Max(180, _config.WindowWidth));
+
+                // Position to the left of the system tray (FluentFlyout companion placement)
+                double calculatedLeft = trayLeft - targetWidth - _config.TaskbarOffsetX;
+                if (calculatedLeft < tbLeft + 200)
+                {
+                    // If taskbar is full of apps, compress width gracefully
+                    calculatedLeft = Math.Max(tbLeft + 160, calculatedLeft);
+                    targetWidth = Math.Max(160, trayLeft - _config.TaskbarOffsetX - calculatedLeft);
+                }
+
+                Width = targetWidth;
+                Left = calculatedLeft;
+
+                // Visual taskbar styling
+                RootGrid.Margin = new Thickness(1);
+                CardBorder.CornerRadius = new CornerRadius(8);
+                CardBorder.Padding = new Thickness(8, 2, 8, 2);
+
+                if (_config.TaskbarCompactSingleLine)
+                {
+                    TxtNextLyric.Visibility = Visibility.Collapsed;
+                }
+
+                IconDock.Foreground = new SolidColorBrush(Color.FromRgb(29, 185, 84)); // Highlight green when docked
+            }
+        }
+
+        private void OnDisplaySettingsChanged(object? sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_config.IsTaskbarDocked)
+                {
+                    AlignToTaskbar();
+                }
+            });
         }
 
         private void ApplyThemeBackground(string theme, double opacity)
@@ -178,6 +253,11 @@ namespace FluentLyrics
 
                 var contextMenu = new System.Windows.Forms.ContextMenuStrip();
                 contextMenu.Items.Add("Mostrar / Ocultar", null, (s, e) => ToggleVisibility());
+                
+                var dockItem = new System.Windows.Forms.ToolStripMenuItem("📌 Anclar a la Barra de Tareas", null, (s, e) => ToggleTaskbarDock());
+                dockItem.Checked = _config.IsTaskbarDocked;
+                contextMenu.Items.Add(dockItem);
+
                 contextMenu.Items.Add("Bloquear posición", null, (s, e) => ToggleLock());
                 contextMenu.Items.Add("Modo Fantasma (Click-Through)", null, (s, e) => ToggleClickThrough());
                 contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
@@ -271,7 +351,7 @@ namespace FluentLyrics
                 if (string.IsNullOrWhiteSpace(activeText)) activeText = "♪ ♪ ♪";
 
                 string nextText = "";
-                if (_config.ShowNextLine && _currentLineIndex + 1 < _currentLyrics.Count)
+                if (_config.ShowNextLine && (!_config.IsTaskbarDocked || !_config.TaskbarCompactSingleLine) && _currentLineIndex + 1 < _currentLyrics.Count)
                 {
                     nextText = _currentLyrics[_currentLineIndex + 1].Text;
                 }
@@ -287,6 +367,9 @@ namespace FluentLyrics
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            // If docked to the taskbar, dragging is disabled so it remains completely static!
+            if (_config.IsTaskbarDocked) return;
+
             if (!_config.IsLocked && e.ButtonState == MouseButtonState.Pressed)
             {
                 DragMove();
@@ -308,6 +391,26 @@ namespace FluentLyrics
             ControlsPanel.BeginAnimation(OpacityProperty, anim);
         }
 
+        private void BtnDock_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleTaskbarDock();
+        }
+
+        private void ToggleTaskbarDock()
+        {
+            _config.IsTaskbarDocked = !_config.IsTaskbarDocked;
+            ConfigService.Save(_config);
+            ApplyConfig();
+
+            if (_trayIcon != null)
+            {
+                string msg = _config.IsTaskbarDocked 
+                    ? "FluentLyrics ahora está integrado estáticamente a la barra de tareas."
+                    : "FluentLyrics ahora está en modo flotante y arrastrable.";
+                _trayIcon.ShowBalloonTip(2500, "Modo de Barra de Tareas", msg, System.Windows.Forms.ToolTipIcon.Info);
+            }
+        }
+
         private void BtnLock_Click(object sender, RoutedEventArgs e)
         {
             ToggleLock();
@@ -315,6 +418,12 @@ namespace FluentLyrics
 
         private void ToggleLock()
         {
+            if (_config.IsTaskbarDocked)
+            {
+                WpfMessageBox.Show("El widget ya está fijo en la barra de tareas. Puedes desanclarlo con el botón 📌.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             _config.IsLocked = !_config.IsLocked;
             IconLock.Text = _config.IsLocked ? "🔒" : "🔓";
             ConfigService.Save(_config);
@@ -369,6 +478,7 @@ namespace FluentLyrics
                 return;
             }
 
+            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
             _syncTimer.Stop();
             _mediaManager.Dispose();
 
