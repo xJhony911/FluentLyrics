@@ -2,7 +2,7 @@
 #define MyAppName "FluentLyrics"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Antigravity"
-#define MyAppURL "https://github.com/Jonathan/FluentLyrics"
+#define MyAppURL "https://github.com/xJhony911/FluentLyrics"
 #define MyAppExeName "FluentLyrics.exe"
 
 [Setup]

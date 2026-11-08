@@ -1,0 +1,52 @@
+name: Build and Package FluentLyrics
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    tags: [ "v*" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 9
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup Inno Setup
+      uses: enigmamurry/setup-inno-setup@v1
+
+    - name: Publish Single-File Executable
+      run: |
+        dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -o publish
+
+    - name: Compile Installer with Inno Setup
+      run: |
+        iscc installer/setup.iss
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: FluentLyrics-v1.0.0-Windows
+        path: |
+          publish/FluentLyrics.exe
+          installer_output/FluentLyrics-Setup-v1.0.0.exe
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          publish/FluentLyrics.exe
+          installer_output/FluentLyrics-Setup-v1.0.0.exe
+        draft: false
+        prerelease: false
+        generate_release_notes: true
