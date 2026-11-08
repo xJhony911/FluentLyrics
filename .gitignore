@@ -1,0 +1,21 @@
+## .NET / Visual Studio
+bin/
+obj/
+publish/
+installer_output/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Local Settings and Cache
+local_cache/
+appsettings.Development.json
+*.log
+
+## OS Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

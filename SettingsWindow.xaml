@@ -1,0 +1,157 @@
+<Window x:Class="FluentLyrics.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Ajustes de FluentLyrics" 
+        Height="540" Width="440"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#1C1C1C"
+        Foreground="#FFFFFF"
+        FontFamily="Segoe UI Variable Display">
+
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="#CCCCCC"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="0,4"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="#2D2D2D"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#444444"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="0,2,0,10"/>
+        </Style>
+
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#EEEEEE"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,6"/>
+        </Style>
+
+        <Style TargetType="Slider">
+            <Setter Property="Margin" Value="0,2,0,10"/>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Background" Value="#1DB954"/>
+            <Setter Property="Foreground" Value="#000000"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#333333"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock Text="⚙ Configuración de FluentLyrics" FontSize="18" FontWeight="Bold" Foreground="#1DB954"/>
+            <TextBlock Text="Personaliza el aspecto, efectos y sincronización a tu gusto." FontSize="12" Foreground="#888888" Margin="0,2,0,0"/>
+        </StackPanel>
+
+        <!-- Scrollable Options -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="0,0,8,0">
+                <!-- Tema y Fondo -->
+                <Label Content="Efecto de Fondo:"/>
+                <ComboBox x:Name="CmbTheme">
+                    <ComboBoxItem Content="DarkGlass (Vidrio Oscuro)" Tag="DarkGlass"/>
+                    <ComboBoxItem Content="Acrylic (Acrílico Blur)" Tag="Acrylic"/>
+                    <ComboBoxItem Content="Mica (Efecto Windows 11)" Tag="Mica"/>
+                    <ComboBoxItem Content="LightGlass (Vidrio Claro)" Tag="LightGlass"/>
+                    <ComboBoxItem Content="Transparent (Sin Fondo, Letras Flotantes)" Tag="Transparent"/>
+                </ComboBox>
+
+                <Grid Margin="0,0,0,2">
+                    <Label Content="Opacidad del Fondo:"/>
+                    <TextBlock x:Name="TxtOpacityVal" Text="85%" Foreground="#1DB954" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                <Slider x:Name="SliderOpacity" Minimum="0.1" Maximum="1.0" Value="0.85" TickFrequency="0.05" IsSnapToTickEnabled="True" ValueChanged="SliderOpacity_ValueChanged"/>
+
+                <!-- Color de Letra Activa -->
+                <Label Content="Color de Letra Activa (Karaoke):"/>
+                <ComboBox x:Name="CmbActiveColor">
+                    <ComboBoxItem Content="Spotify Verde (#1DB954)" Tag="#1DB954"/>
+                    <ComboBoxItem Content="Blanco Puro (#FFFFFF)" Tag="#FFFFFF"/>
+                    <ComboBoxItem Content="Cian Neón (#00E5FF)" Tag="#00E5FF"/>
+                    <ComboBoxItem Content="Rosa Neón (#FF4081)" Tag="#FF4081"/>
+                    <ComboBoxItem Content="Dorado Brillante (#FFD700)" Tag="#FFD700"/>
+                    <ComboBoxItem Content="Verde Menta (#69F0AE)" Tag="#69F0AE"/>
+                </ComboBox>
+
+                <!-- Tamaño de Fuente -->
+                <Grid Margin="0,0,0,2">
+                    <Label Content="Tamaño de Fuente:"/>
+                    <TextBlock x:Name="TxtFontSizeVal" Text="15 pt" Foreground="#1DB954" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                <Slider x:Name="SliderFontSize" Minimum="12" Maximum="24" Value="15" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SliderFontSize_ValueChanged"/>
+
+                <!-- Alineación -->
+                <Label Content="Alineación del Texto:"/>
+                <ComboBox x:Name="CmbAlignment">
+                    <ComboBoxItem Content="Centrado" Tag="Center"/>
+                    <ComboBoxItem Content="Izquierda" Tag="Left"/>
+                    <ComboBoxItem Content="Derecha" Tag="Right"/>
+                </ComboBox>
+
+                <!-- Checkboxes de Comportamiento -->
+                <CheckBox x:Name="ChkNextLine" Content="Mostrar previsualización de la siguiente estrofa"/>
+                <CheckBox x:Name="ChkGlow" Content="Efecto de resplandor / brillo en la letra activa"/>
+                <CheckBox x:Name="ChkAutoHide" Content="Ocultar automáticamente al pausar la música"/>
+                <CheckBox x:Name="ChkClickThrough" Content="Modo Fantasma (clics atraviesan el widget)"/>
+                <CheckBox x:Name="ChkAlwaysOnTop" Content="Mantener siempre visible sobre otras ventanas"/>
+
+                <!-- Offset de Sincronización -->
+                <Grid Margin="0,8,0,2">
+                    <Label Content="Ajuste fino de sincronización (Offset):"/>
+                    <TextBlock x:Name="TxtOffsetVal" Text="0 ms" Foreground="#1DB954" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                <Slider x:Name="SliderOffset" Minimum="-2000" Maximum="2000" Value="0" TickFrequency="50" IsSnapToTickEnabled="True" ValueChanged="SliderOffset_ValueChanged"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Footer Actions -->
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Button Content="Restablecer Posición" Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left" Click="BtnResetPosition_Click"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancelar" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Click="BtnCancel_Click"/>
+                <Button Content="Guardar y Aplicar" Style="{StaticResource ActionButton}" Click="BtnSave_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
