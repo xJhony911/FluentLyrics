@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Ajustes de FluentLyrics" 
-        Height="620" Width="490"
+        Height="630" Width="510"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Background="#0B0D13"
@@ -145,7 +145,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="FluentLyrics" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF"/>
                             <Border Background="#1A2836" CornerRadius="4" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="v1.3.0" FontSize="10" FontWeight="Bold" Foreground="#00F0FF"/>
+                                <TextBlock Text="v1.4.0" FontSize="10" FontWeight="Bold" Foreground="#00F0FF"/>
                             </Border>
                         </StackPanel>
                         <TextBlock Text="Configuración y Personalización Minimalista" FontSize="11" Foreground="#64748B"/>
@@ -162,7 +162,7 @@
             <Border Grid.Row="1" Background="#0F131D" CornerRadius="18" Padding="3" Margin="0,0,0,14" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton x:Name="TabVisual" Content="🎨 Visual &amp; RGB" Style="{StaticResource TabPillButton}" IsChecked="True" Checked="Tab_Changed"/>
-                    <RadioButton x:Name="TabTaskbar" Content="📌 Barra de Tareas" Style="{StaticResource TabPillButton}" Checked="Tab_Changed"/>
+                    <RadioButton x:Name="TabModes" Content="🖥️ Modos &amp; Barra" Style="{StaticResource TabPillButton}" Checked="Tab_Changed"/>
                     <RadioButton x:Name="TabGeneral" Content="⚙️ Ajustes" Style="{StaticResource TabPillButton}" Checked="Tab_Changed"/>
                 </StackPanel>
             </Border>
@@ -218,7 +218,7 @@
                                 </StackPanel>
 
                                 <Grid Margin="0,4,0,2">
-                                    <TextBlock Text="Tamaño de Fuente:" FontSize="12" Foreground="#CBD5E1"/>
+                                    <TextBlock Text="Tamaño de Fuente (Modo Flotante):" FontSize="12" Foreground="#CBD5E1"/>
                                     <TextBlock x:Name="TxtFontSizeVal" Text="15 pt" FontSize="12" FontWeight="Bold" Foreground="#00F0FF" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Slider x:Name="SliderFontSize" Minimum="12" Maximum="24" Value="15" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SliderFontSize_ValueChanged"/>
@@ -248,36 +248,68 @@
 
                     </StackPanel>
 
-                    <!-- TAB 2: Barra de Tareas -->
-                    <StackPanel x:Name="PanelTaskbar" Visibility="Collapsed">
-                        
+                    <!-- TAB 2: Modos de Pantalla & Barra de Tareas -->
+                    <StackPanel x:Name="PanelModes" Visibility="Collapsed">
+
+                        <!-- CARD: Estilo de Letras / Karaoke -->
+                        <Border Style="{StaticResource GlassCard}" BorderBrush="#00F0FF" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="🎤 Estilo de Karaoke &amp; Letras" FontWeight="Bold" FontSize="13" Foreground="#00F0FF" Margin="0,0,0,4"/>
+                                <TextBlock Text="Elige cómo se presentan las palabras de la canción." FontSize="11" Foreground="#8A99AD" Margin="0,0,0,8"/>
+
+                                <ComboBox x:Name="CmbDisplayMode" Background="#161B28" Foreground="#FFFFFF" BorderBrush="#252D3D" Height="32" Margin="0,0,0,6">
+                                    <ComboBoxItem Content="✨ Palabra Resaltada y Agrandada (Apple / Spotify)" Tag="WordHighlight"/>
+                                    <ComboBoxItem Content="⚡ One Word Pop (TikTok / Reels palabra a palabra)" Tag="OneWord"/>
+                                    <ComboBoxItem Content="📄 Frase Completa Estándar" Tag="FullLine"/>
+                                </ComboBox>
+                                <TextBlock Text="• Palabra Resaltada: Toda la frase visible, la palabra activa crece y brilla al ritmo." FontSize="11" Foreground="#64748B" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- CARD: Modo Widget de Escritorio -->
                         <Border Style="{StaticResource GlassCard}">
                             <StackPanel>
-                                <TextBlock Text="📌 Anclaje Estático (Windows 11)" FontWeight="Bold" FontSize="13" Foreground="#00F0FF" Margin="0,0,0,4"/>
-                                <TextBlock Text="Encaja perfectamente en la barra de tareas al lado de FluentFlyouts." FontSize="11" Foreground="#8A99AD" Margin="0,0,0,10"/>
+                                <TextBlock Text="🖥️ Modo Fondo de Escritorio (Desktop Widget)" FontWeight="Bold" FontSize="13" Foreground="#FFFFFF" Margin="0,0,0,4"/>
+                                <TextBlock Text="Widget de gran presencia estética para tu escritorio." FontSize="11" Foreground="#8A99AD" Margin="0,0,0,8"/>
+
+                                <CheckBox x:Name="ChkDesktopMode" Content="Activar Modo Widget de Escritorio" Style="{StaticResource ModernToggleSwitch}"/>
+                                <CheckBox x:Name="ChkDesktopPin" Content="Anclar al fondo (permanece detrás de otras ventanas)" Style="{StaticResource ModernToggleSwitch}"/>
+                                <CheckBox x:Name="ChkPrevLine" Content="Mostrar estrofa anterior (multilínea contextual)" Style="{StaticResource ModernToggleSwitch}"/>
+
+                                <Grid Margin="0,8,0,2">
+                                    <TextBlock Text="Tamaño de Fuente en Escritorio:" FontSize="12" Foreground="#CBD5E1"/>
+                                    <TextBlock x:Name="TxtDesktopFontVal" Text="22 pt" FontSize="12" FontWeight="Bold" Foreground="#00F0FF" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Slider x:Name="SliderDesktopFont" Minimum="16" Maximum="36" Value="22" TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="SliderDesktopFont_ValueChanged"/>
+
+                                <Grid Margin="0,4,0,2">
+                                    <TextBlock Text="Ancho del Widget en Escritorio:" FontSize="12" Foreground="#CBD5E1"/>
+                                    <TextBlock x:Name="TxtDesktopWidthVal" Text="650 px" FontSize="12" FontWeight="Bold" Foreground="#00F0FF" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Slider x:Name="SliderDesktopWidth" Minimum="400" Maximum="1000" Value="650" TickFrequency="25" IsSnapToTickEnabled="True" ValueChanged="SliderDesktopWidth_ValueChanged"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <!-- CARD: Barra de Tareas -->
+                        <Border Style="{StaticResource GlassCard}">
+                            <StackPanel>
+                                <TextBlock Text="📌 Anclaje a Barra de Tareas (Windows 11)" FontWeight="Bold" FontSize="13" Foreground="#FFFFFF" Margin="0,0,0,4"/>
+                                <TextBlock Text="Encaja perfectamente al lado de FluentFlyouts." FontSize="11" Foreground="#8A99AD" Margin="0,0,0,10"/>
 
                                 <CheckBox x:Name="ChkTaskbarDock" Content="Anclar fijamente a la barra de tareas" Style="{StaticResource ModernToggleSwitch}"/>
                                 <CheckBox x:Name="ChkTaskbarCompact" Content="Modo 1 sola línea (ahorra espacio vertical)" Style="{StaticResource ModernToggleSwitch}"/>
 
-                                <Grid Margin="0,10,0,2">
+                                <Grid Margin="0,8,0,2">
                                     <TextBlock Text="Distancia desde la bandeja (Offset px):" FontSize="12" Foreground="#CBD5E1"/>
                                     <TextBlock x:Name="TxtTaskbarOffsetVal" Text="220 px" FontSize="12" FontWeight="Bold" Foreground="#00F0FF" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Slider x:Name="SliderTaskbarOffset" Minimum="0" Maximum="600" Value="220" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SliderTaskbarOffset_ValueChanged"/>
 
-                                <Grid Margin="0,6,0,2">
-                                    <TextBlock Text="Ancho máximo (evita tapar aplicaciones):" FontSize="12" Foreground="#CBD5E1"/>
+                                <Grid Margin="0,4,0,2">
+                                    <TextBlock Text="Ancho máximo en barra:" FontSize="12" Foreground="#CBD5E1"/>
                                     <TextBlock x:Name="TxtTaskbarMaxWVal" Text="340 px" FontSize="12" FontWeight="Bold" Foreground="#00F0FF" HorizontalAlignment="Right"/>
                                 </Grid>
                                 <Slider x:Name="SliderTaskbarMaxW" Minimum="180" Maximum="500" Value="340" TickFrequency="20" IsSnapToTickEnabled="True" ValueChanged="SliderTaskbarMaxW_ValueChanged"/>
-                            </StackPanel>
-                        </Border>
-
-                        <Border Style="{StaticResource GlassCard}">
-                            <StackPanel>
-                                <TextBlock Text="✨ Modo One Word (TikTok / Reels)" FontWeight="Bold" FontSize="13" Foreground="#FFFFFF" Margin="0,0,0,4"/>
-                                <TextBlock Text="Las palabras salen una por una al compás de la voz." FontSize="11" Foreground="#8A99AD" Margin="0,0,0,8"/>
-                                <CheckBox x:Name="ChkOneWord" Content="Activar modo palabra por palabra" Style="{StaticResource ModernToggleSwitch}"/>
                             </StackPanel>
                         </Border>
 
@@ -323,7 +355,7 @@
                     <Button Content="Cancelar" Click="BtnCancel_Click" Background="#161B28" Foreground="#CBD5E1" BorderBrush="#252D3D" BorderThickness="1" Padding="14,7" FontSize="12" Cursor="Hand" Margin="0,0,8,0">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderBrush}" CornerRadius="6" Padding="{TemplateBinding Padding}">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>

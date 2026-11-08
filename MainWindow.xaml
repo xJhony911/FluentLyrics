@@ -69,22 +69,34 @@
 
                 <!-- Left Mini Indicator / Status Dot -->
                 <Grid x:Name="StatusDotContainer" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0">
-                    <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#1DB954">
+                    <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#00F0FF">
                         <Ellipse.Effect>
-                            <DropShadowEffect Color="#1DB954" BlurRadius="6" ShadowDepth="0"/>
+                            <DropShadowEffect Color="#00F0FF" BlurRadius="6" ShadowDepth="0"/>
                         </Ellipse.Effect>
                     </Ellipse>
                 </Grid>
 
                 <!-- Center: Lyrics Text Container -->
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <!-- Previous Lyric Line (Desktop mode) -->
+                    <TextBlock x:Name="TxtPrevLyric"
+                               Text=""
+                               FontFamily="Segoe UI Variable Text"
+                               FontSize="12"
+                               Foreground="#55FFFFFF"
+                               TextTrimming="CharacterEllipsis"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Stretch"
+                               Margin="0,0,0,2"
+                               Visibility="Collapsed"/>
+
                     <!-- Current Active Lyric -->
                     <TextBlock x:Name="TxtActiveLyric"
                                Text="FluentLyrics • Esperando música..."
                                FontFamily="Segoe UI Variable Display"
-                               FontSize="14"
+                               FontSize="15"
                                FontWeight="SemiBold"
-                               Foreground="#1DB954"
+                               Foreground="#00F0FF"
                                TextTrimming="CharacterEllipsis"
                                TextAlignment="Center"
                                HorizontalAlignment="Stretch"
@@ -93,7 +105,7 @@
                             <ScaleTransform x:Name="LyricScale" ScaleX="1.0" ScaleY="1.0"/>
                         </TextBlock.RenderTransform>
                         <TextBlock.Effect>
-                            <DropShadowEffect x:Name="GlowEffect" BlurRadius="6" ShadowDepth="0" Color="#1DB954" Opacity="0.4"/>
+                            <DropShadowEffect x:Name="GlowEffect" BlurRadius="8" ShadowDepth="0" Color="#00F0FF" Opacity="0.5"/>
                         </TextBlock.Effect>
                     </TextBlock>
 
@@ -110,13 +122,17 @@
                                Visibility="Visible"/>
                 </StackPanel>
 
-                <!-- Right: Hover Controls (Dock, Lock, Settings, Hide) -->
+                <!-- Right: Hover Controls (Dock, Desktop, Lock, Settings, Hide) -->
                 <StackPanel x:Name="ControlsPanel" 
                             Grid.Column="2" 
                             Orientation="Horizontal" 
                             VerticalAlignment="Center" 
                             Opacity="0"
                             Margin="6,0,0,0">
+
+                    <Button x:Name="BtnDesktop" Style="{StaticResource WidgetIconButton}" ToolTip="Modo Widget de Escritorio" Click="BtnDesktop_Click">
+                        <TextBlock x:Name="IconDesktop" Text="🖥️" FontSize="11"/>
+                    </Button>
 
                     <Button x:Name="BtnDock" Style="{StaticResource WidgetIconButton}" ToolTip="Anclar/Desanclar de la barra de tareas" Click="BtnDock_Click">
                         <TextBlock x:Name="IconDock" Text="📌" FontSize="11"/>

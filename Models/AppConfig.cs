@@ -13,9 +13,20 @@ namespace FluentLyrics.Models
         public bool IsClickThrough { get; set; } = false;
 
         // Customization: Pure Text / Minimalist
-        public bool ShowStatusDot { get; set; } = false; // Default clean
-        public bool ShowBorder { get; set; } = false; // Default clean
-        public bool OneWordMode { get; set; } = false; // TikTok word-by-word karaoke
+        public bool ShowStatusDot { get; set; } = false;
+        public bool ShowBorder { get; set; } = false;
+
+        // Karaoke Display Styles: "WordHighlight" (Apple/Spotify), "OneWord" (TikTok), "FullLine" (Standard)
+        public string DisplayMode { get; set; } = "WordHighlight";
+        public bool OneWordMode { get; set; } = false; // Legacy fallback
+
+        // Desktop Widget Mode
+        public bool IsDesktopWidget { get; set; } = false; // Large aesthetic desktop widget
+        public bool DesktopPinToBottom { get; set; } = false; // Keep behind other windows like wallpaper
+        public double DesktopFontSize { get; set; } = 22.0;
+        public double DesktopWidth { get; set; } = 650.0;
+        public double DesktopHeight { get; set; } = 110.0;
+        public bool ShowPrevLine { get; set; } = true; // Show previous lyric line above in desktop mode
 
         // RGB Mode (Chroma / Rainbow / Cyberpunk)
         public bool EnableRgbMode { get; set; } = false;

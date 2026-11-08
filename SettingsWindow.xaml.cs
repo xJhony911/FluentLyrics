@@ -33,10 +33,10 @@ namespace FluentLyrics
 
         private void Tab_Changed(object sender, RoutedEventArgs e)
         {
-            if (PanelVisual == null || PanelTaskbar == null || PanelGeneral == null) return;
+            if (PanelVisual == null || PanelModes == null || PanelGeneral == null) return;
 
             PanelVisual.Visibility = (TabVisual.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
-            PanelTaskbar.Visibility = (TabTaskbar.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
+            PanelModes.Visibility = (TabModes.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
             PanelGeneral.Visibility = (TabGeneral.IsChecked == true) ? Visibility.Visible : Visibility.Collapsed;
         }
 
@@ -50,7 +50,7 @@ namespace FluentLyrics
             // Active Color
             TxtCustomColor.Text = _config.ActiveTextColor;
 
-            // Font size
+            // Font size (Floating)
             SliderFontSize.Value = _config.FontSize;
             ChkGlow.IsChecked = _config.EnableTextGlow;
 
@@ -59,14 +59,22 @@ namespace FluentLyrics
             ChkShowBorder.IsChecked = _config.ShowBorder;
             ChkShowDot.IsChecked = _config.ShowStatusDot;
 
+            // Karaoke / Display Mode
+            string effectiveMode = _config.OneWordMode ? "OneWord" : _config.DisplayMode;
+            SelectComboByTag(CmbDisplayMode, effectiveMode);
+
+            // Desktop Widget Mode
+            ChkDesktopMode.IsChecked = _config.IsDesktopWidget;
+            ChkDesktopPin.IsChecked = _config.DesktopPinToBottom;
+            ChkPrevLine.IsChecked = _config.ShowPrevLine;
+            SliderDesktopFont.Value = _config.DesktopFontSize;
+            SliderDesktopWidth.Value = _config.DesktopWidth;
+
             // Taskbar Docking
             ChkTaskbarDock.IsChecked = _config.IsTaskbarDocked;
             ChkTaskbarCompact.IsChecked = _config.TaskbarCompactSingleLine;
             SliderTaskbarOffset.Value = _config.TaskbarOffsetX;
             SliderTaskbarMaxW.Value = _config.TaskbarMaxWidth;
-
-            // One Word Mode
-            ChkOneWord.IsChecked = _config.OneWordMode;
 
             // General & Behaviors
             ChkClickThrough.IsChecked = _config.IsClickThrough;
@@ -106,6 +114,22 @@ namespace FluentLyrics
             if (TxtFontSizeVal != null)
             {
                 TxtFontSizeVal.Text = $"{(int)e.NewValue} pt";
+            }
+        }
+
+        private void SliderDesktopFont_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (TxtDesktopFontVal != null)
+            {
+                TxtDesktopFontVal.Text = $"{(int)e.NewValue} pt";
+            }
+        }
+
+        private void SliderDesktopWidth_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (TxtDesktopWidthVal != null)
+            {
+                TxtDesktopWidthVal.Text = $"{(int)e.NewValue} px";
             }
         }
 
@@ -159,11 +183,12 @@ namespace FluentLyrics
         private void BtnResetPosition_Click(object sender, RoutedEventArgs e)
         {
             _config.IsTaskbarDocked = false;
+            _config.IsDesktopWidget = false;
             _config.WindowX = -1;
             _config.WindowY = -1;
             ConfigService.Save(_config);
             _mainWindow.ApplyConfig();
-            WpfMessageBox.Show("Posición restablecida al lado de la barra de tareas.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
+            WpfMessageBox.Show("Posición y modo restablecidos a flotante estándar.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
@@ -188,14 +213,32 @@ namespace FluentLyrics
             _config.ShowBorder = ChkShowBorder.IsChecked ?? false;
             _config.ShowStatusDot = ChkShowDot.IsChecked ?? false;
 
+            // Display / Karaoke Mode
+            string selectedMode = GetSelectedTag(CmbDisplayMode, "WordHighlight");
+            _config.DisplayMode = selectedMode;
+            _config.OneWordMode = (selectedMode == "OneWord");
+
+            // Desktop Widget Mode
+            bool wasDesktop = _config.IsDesktopWidget;
+            _config.IsDesktopWidget = ChkDesktopMode.IsChecked ?? false;
+            _config.DesktopPinToBottom = ChkDesktopPin.IsChecked ?? false;
+            _config.ShowPrevLine = ChkPrevLine.IsChecked ?? true;
+            _config.DesktopFontSize = SliderDesktopFont.Value;
+            _config.DesktopWidth = SliderDesktopWidth.Value;
+
             // Taskbar Docking
             _config.IsTaskbarDocked = ChkTaskbarDock.IsChecked ?? false;
             _config.TaskbarCompactSingleLine = ChkTaskbarCompact.IsChecked ?? true;
             _config.TaskbarOffsetX = SliderTaskbarOffset.Value;
             _config.TaskbarMaxWidth = SliderTaskbarMaxW.Value;
 
-            // One Word Mode
-            _config.OneWordMode = ChkOneWord.IsChecked ?? false;
+            // Exclusivity between Desktop Widget and Taskbar Docked
+            if (_config.IsDesktopWidget && _config.IsTaskbarDocked)
+            {
+                // If both checked, prioritize whatever was just turned on or default to Desktop
+                if (!wasDesktop) _config.IsTaskbarDocked = false;
+                else _config.IsDesktopWidget = false;
+            }
 
             // General & Behaviors
             _config.IsClickThrough = ChkClickThrough.IsChecked ?? false;

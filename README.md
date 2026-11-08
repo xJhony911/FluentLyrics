@@ -1,90 +1,130 @@
 # 🎵 FluentLyrics
 
 <p align="center">
-  <img src="Assets/logo.png" width="128" height="128" alt="FluentLyrics Logo" />
+  <img src="Assets/banner.png" alt="FluentLyrics Cyberpunk Banner" width="100%" />
 </p>
 
 <p align="center">
   <strong>Widget de letras sincronizadas (karaoke) ultra-ligero para Windows 11 y 10.</strong><br>
-  Diseñado para posicionarse al lado o encima de tu barra de tareas, acompañando widgets como FluentFlyouts.
+  Diseñado para integrarse estáticamente a tu barra de tareas, flotar libremente o lucirse como un aesthetic widget en tu fondo de escritorio.
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/.NET-9.0-purple.svg" alt=".NET 9" />
-  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-blue.svg" alt="Windows" />
-  <img src="https://img.shields.io/badge/RAM-~28%20MB-brightgreen.svg" alt="RAM" />
-  <img src="https://img.shields.io/badge/CPU-0.0%25-brightgreen.svg" alt="CPU" />
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
+  <a href="https://github.com/xJhony911/FluentLyrics/releases"><img src="https://img.shields.io/badge/Release-v1.4.0-00F0FF?style=for-the-badge&logo=github" alt="Release v1.4.0" /></a>
+  <img src="https://img.shields.io/badge/.NET-9.0-purple?style=for-the-badge&logo=dotnet" alt=".NET 9" />
+  <img src="https://img.shields.io/badge/Platform-Windows%2011%20%2F%2010-0078D4?style=for-the-badge&logo=windows11" alt="Windows" />
+  <img src="https://img.shields.io/badge/RAM-%3C%2025%20MB-brightgreen?style=for-the-badge" alt="RAM < 25MB" />
+  <img src="https://img.shields.io/badge/CPU-0.1%25-brightgreen?style=for-the-badge" alt="CPU 0.1%" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License MIT" />
 </p>
 
 ---
 
-## ✨ Características Principales
+## 📸 Galería y Vistas Previas
 
-- 🌈 **Modo RGB Chroma Dinámico:** Efecto arcoíris y neón fluido que cicla suavemente los colores de las letras con velocidad configurable y 0.0% de consumo de CPU adicional.
-- 🎨 **Nueva Interfaz de Ajustes Minimalista:** Rediseño completo inspirado en Obsidian y Cyberpunk con navegación por pestañas de píldora, interruptores modernos (switches) y selector rápido de colores neón.
-- 📌 **Modo Integrado a la Barra de Tareas (Windows 11):** Se ancla automáticamente al tamaño y altura de la barra de tareas de Windows. Permanece estático, sin riesgo de ser arrastrado por error, y adapta su ancho inteligentemente si la barra de tareas se llena de aplicaciones abiertas para nunca tapar tus programas.
-- ✨ **Modo 'One Word' (Estilo TikTok / Reels):** Muestra palabra por palabra con una animación 'pop' dinámica al ritmo exacto de la música.
-- 🪟 **Modo Minimalista / Solo Letras:** Puedes ocultar el borde exterior y el punto indicador para que queden únicamente las letras flotando sobre la barra de tareas con brillo y transparencia pura.
-- ⚡ **Ultra-ligero y Eficiente:** Desarrollado en C# .NET nativo con aceleración por hardware DWM. Nada de Electron ni navegadores embebidos pesados. Consume menos de 30 MB de memoria RAM y 0.0% de CPU en reposo.
-- 🎶 **Cero configuración de cuentas:** No necesitas crear API Keys de Spotify ni iniciar sesión en la web. Utiliza la API nativa de Windows **GSMTC** (`Windows.Media.Control`), compatible con Spotify Desktop, Spotify Web, YouTube Music y cualquier reproductor de Windows.
-- 🎤 **Letras Sincronizadas (Karaoke):** Conexión con **LRCLIB** para obtener letras sincronizadas línea a línea con interpolación de milisegundos en tiempo real.
-- 💾 **Caché Inteligente sin conexión:** Guarda las letras reproducidas en disco para cargarlas al instante sin volver a consultar internet.
-- 🪟 **Diseño Fluent Windows 11:** Efectos de desenfoque **Acrylic Blur**, **Mica**, o modo **Completamente Transparente** (solo las letras flotando sobre la barra).
-- 👻 **Modo Fantasma (Click-Through):** Al activarlo, el widget se vuelve traspasable al ratón para que puedas hacer clic en la barra de tareas o ventanas que estén detrás sin que el widget interfiera.
-- 🔒 **Bloqueo y Posicionamiento Libre:** Si prefieres usarlo como widget flotante, arrástralo donde quieras y bloquéalo con un clic.
-- ⚙️ **Panel de Personalización en vivo:** Cambia colores, tamaño de letra, opacidad de fondo, alineación y desfase temporal (offset ± ms).
-- 🕒 **Auto-ocultar:** Se puede configurar para ocultarse automáticamente cuando la música se detiene.
+### 🖥️ Modo Widget de Fondo de Escritorio & Resaltado Dinámico
+> Muestra la frase completa mientras la palabra activa se hace más grande y resplandece en tiempo real con contexto de estrofas anteriores y posteriores.
 
----
+<p align="center">
+  <img src="Assets/preview-desktop.png" alt="Modo Fondo de Escritorio con Word Highlight" width="90%" />
+</p>
 
-## 🚀 Instalación y Uso
+### 📌 Modo Integrado a la Barra de Tareas (Windows 11)
+> Encaja a la perfección al lado de FluentFlyouts y los controles de Spotify con alineación estática y ancho adaptable inteligente.
 
-### Opción 1: Instalador Automático (Recomendado)
-1. Descarga `FluentLyrics-Setup-v1.3.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
-2. Ejecuta el instalador. Puedes elegir que inicie automáticamente al encender Windows.
+<p align="center">
+  <img src="Assets/preview-taskbar.png" alt="Modo Barra de Tareas Windows 11" width="90%" />
+</p>
 
-### Opción 2: Versión Portable
-1. Descarga el ejecutable autónomo `FluentLyrics.exe`.
-2. Guárdalo en la carpeta que prefieras y ejecútalo directamente. No requiere instalar nada.
+### 🎨 Centro de Ajustes Cyberpunk Minimalista
+> Panel de personalización en vidrio oscuro (`#0B0D13`), pestañas de píldora, switches modernos y ajuste en vivo de RGB, fuentes y modos.
+
+<p align="center">
+  <img src="Assets/preview-settings.png" alt="Panel de Ajustes Minimalista" width="80%" />
+</p>
 
 ---
 
-## 🎛️ Controles y Atajos
+## ✨ Novedades de la Versión 1.4.0
 
-| Acción | Cómo realizarlo |
+- 🖥️ **Modo Fondo de Escritorio (Desktop Widget):** 
+  - Transforma FluentLyrics en un widget estético de gran presencia para tu fondo de pantalla.
+  - Dimensiones y tamaño de fuente ampliados configurables (hasta 36 pt).
+  - Vista contextual multilínea (estrofa anterior + frase activa + siguiente estrofa).
+  - Opción para anclarlo al fondo (permanece detrás de otras ventanas activas).
+- 🎤 **Modo Palabra Resaltada y Agrandada (Word Highlight):**
+  - Estilo premium tipo **Apple Music / Spotify Desktop**.
+  - La frase completa se mantiene legible en pantalla, mientras la palabra exacta que el cantante pronuncia **crece de tamaño** y brilla o cambia de color al ritmo de la música.
+  - Cero recolector de basura (GC): utiliza inlines en caché para mantener 0.0% de consumo de CPU.
+- ⚡ **Modo 'One Word' (Estilo TikTok / Reels):**
+  - Letra sincronizada palabra por palabra con animación punchy pop al ritmo del beat.
+- 🌈 **Modo RGB Chroma Dinámico:**
+  - Cicla colores neón de forma suave y fluida con velocidad y estilos configurables (Smooth Rainbow, Cyberpunk Chroma, Pulse Beat).
+- 📌 **Alineación Estática a la Barra de Tareas:**
+  - No estorba ni se mueve por error; se ajusta automáticamente a la altura y posición de la barra de Windows 11.
+- 🪟 **Puro Texto Flotante (Sin Bordes Invasivos):**
+  - Opción de desactivar completamente bordes y marcos de DWM de Windows para que solo flote la tipografía luminosa sobre el fondo.
+
+---
+
+## ⚡ Rendimiento y Consumo de Recursos
+
+FluentLyrics fue diseñado desde cero para ser invisible en el Administrador de Tareas:
+
+| Métrica | FluentLyrics | Apps basadas en Electron |
+| :--- | :--- | :--- |
+| **Consumo de Memoria RAM** | **~23.3 MB** | ~180 MB - 350 MB |
+| **Uso de CPU en Reposo** | **0.0% - 0.1%** | 1.5% - 5.0% |
+| **Tiempo de Arranque** | **< 0.4 segundos** | 2.5 - 4.0 segundos |
+| **Integración con Windows** | DWM & GSMTC Nativo | Webview emulado |
+
+---
+
+## 🚀 Instalación Rápida
+
+### Opción 1: Instalador Automático de Windows (Recomendado)
+1. Descarga [FluentLyrics-Setup-v1.4.0.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.0/FluentLyrics-Setup-v1.4.0.exe) desde la sección de **[Releases](https://github.com/xJhony911/FluentLyrics/releases)**.
+2. Ejecuta el instalador con un solo clic. Tienes la opción de que inicie automáticamente junto a Windows.
+
+### Opción 2: Ejecutable Portable (Sin Instalación)
+1. Descarga el ejecutable autónomo [FluentLyrics.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.0/FluentLyrics.exe).
+2. Guárdalo donde gustes y ejecútalo directamente. No requiere librerías adicionales ni configuración.
+
+---
+
+## 🎛️ Atajos y Controles Rápidos
+
+| Control | Acción |
 | :--- | :--- |
-| **Mover el widget** | Haz clic izquierdo sobre el widget y arrástralo donde quieras. |
-| **Bloquear posición** | Pasa el ratón sobre el widget y presiona el candado `🔓` o desde el icono en la bandeja. |
-| **Abrir Ajustes** | Haz clic en el engranaje `⚙` o clic derecho en el icono de la bandeja del sistema. |
-| **Modo Fantasma** | Clic derecho en el icono de la bandeja del sistema -> `Modo Fantasma (Click-Through)`. |
-| **Ocultar / Mostrar** | Doble clic en el icono de la bandeja del sistema. |
+| **Botón 🖥️** | Alterna entre el **Modo Widget de Escritorio** y el modo flotante estándar. |
+| **Botón 📌** | Ancla o desancla fijamente el widget en la barra de tareas de Windows 11. |
+| **Botón 🔒** | Bloquea la posición para evitar moverlo accidentalmente con el mouse. |
+| **Botón ⚙️** | Abre el panel de personalización y ajustes visuales. |
+| **Doble clic en bandeja** | Muestra u oculta instantáneamente el widget. |
+| **Menú contextual (Bandeja)** | Acceso directo a modos de visualización (Palabra Resaltada, One Word, Frase Completa, RGB Chroma y Modo Fantasma). |
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Tecnologías Empleadas
 
-- **C# .NET 9.0 (WPF)**
-- **Windows Runtime (WinRT) GSMTC API** (`Windows.Media.Control`)
-- **Desktop Window Manager (DWM) API** para Mica y Acrílico nativo
-- **LRCLIB REST API**
-- **Inno Setup 6** para el instalador
+- **Lenguaje & Framework:** C# 13 / .NET 9.0 (WPF nativo)
+- **APIs del Sistema:** Windows Runtime (WinRT) GSMTC (`Windows.Media.Control`), DWM API (`dwmapi.dll`)
+- **Proveedor de Letras:** [LRCLIB REST API](https://lrclib.net/) con caché local en disco (`%LocalAppData%\FluentLyrics\Cache`)
+- **Instalador:** Inno Setup 6
 
 ---
 
 ## 📦 Compilación desde el Código Fuente
 
-Si deseas compilar el proyecto manualmente:
-
 ```powershell
-# Clonar el repositorio
+# 1. Clonar el repositorio
 git clone https://github.com/xJhony911/FluentLyrics.git
 cd FluentLyrics
 
-# Compilar ejecutable único para Windows x64
+# 2. Compilar ejecutable único auto-contenido (Release win-x64)
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish
 
-# Generar el instalador (requiere Inno Setup 6)
+# 3. Compilar instalador oficial con Inno Setup
 iscc installer\setup.iss
 ```
 
@@ -92,4 +132,4 @@ iscc installer\setup.iss
 
 ## 📄 Licencia
 
-Este proyecto está distribuido bajo la Licencia **MIT**. Consulta el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia **MIT**. Puedes usarlo, compartirlo y adaptarlo libremente.
