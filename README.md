@@ -21,6 +21,8 @@
 
 ## ✨ Características Principales
 
+- 🌈 **Modo RGB Chroma Dinámico:** Efecto arcoíris y neón fluido que cicla suavemente los colores de las letras con velocidad configurable y 0.0% de consumo de CPU adicional.
+- 🎨 **Nueva Interfaz de Ajustes Minimalista:** Rediseño completo inspirado en Obsidian y Cyberpunk con navegación por pestañas de píldora, interruptores modernos (switches) y selector rápido de colores neón.
 - 📌 **Modo Integrado a la Barra de Tareas (Windows 11):** Se ancla automáticamente al tamaño y altura de la barra de tareas de Windows. Permanece estático, sin riesgo de ser arrastrado por error, y adapta su ancho inteligentemente si la barra de tareas se llena de aplicaciones abiertas para nunca tapar tus programas.
 - ✨ **Modo 'One Word' (Estilo TikTok / Reels):** Muestra palabra por palabra con una animación 'pop' dinámica al ritmo exacto de la música.
 - 🪟 **Modo Minimalista / Solo Letras:** Puedes ocultar el borde exterior y el punto indicador para que queden únicamente las letras flotando sobre la barra de tareas con brillo y transparencia pura.
@@ -39,7 +41,7 @@
 ## 🚀 Instalación y Uso
 
 ### Opción 1: Instalador Automático (Recomendado)
-1. Descarga `FluentLyrics-Setup-v1.2.1.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
+1. Descarga `FluentLyrics-Setup-v1.3.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
 2. Ejecuta el instalador. Puedes elegir que inicie automáticamente al encender Windows.
 
 ### Opción 2: Versión Portable

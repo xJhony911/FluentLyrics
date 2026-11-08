@@ -1,6 +1,6 @@
 ; Inno Setup Script for FluentLyrics
 #define MyAppName "FluentLyrics"
-#define MyAppVersion "1.2.1"
+#define MyAppVersion "1.3.0"
 #define MyAppPublisher "Antigravity"
 #define MyAppURL "https://github.com/xJhony911/FluentLyrics"
 #define MyAppExeName "FluentLyrics.exe"
@@ -16,7 +16,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=..\installer_output
-OutputBaseFilename=FluentLyrics-Setup-v1.2.1
+OutputBaseFilename=FluentLyrics-Setup-v1.3.0
 SetupIconFile=..\Assets\icon.ico
 Compression=lzma2/ultra64
 SolidCompression=yes

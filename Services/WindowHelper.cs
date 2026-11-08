@@ -46,6 +46,20 @@ namespace FluentLyrics.Services
             public int Height => Bottom - Top;
         }
 
+        [DllImport("psapi.dll")]
+        private static extern int EmptyWorkingSet(IntPtr hwProc);
+
+        public static void TrimWorkingSet()
+        {
+            try
+            {
+                GC.Collect(2, GCCollectionMode.Aggressive, true, true);
+                GC.WaitForPendingFinalizers();
+                EmptyWorkingSet(System.Diagnostics.Process.GetCurrentProcess().Handle);
+            }
+            catch { }
+        }
+
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
         private const int DWMWA_BORDER_COLOR = 34;

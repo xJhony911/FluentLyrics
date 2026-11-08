@@ -34,6 +34,10 @@ namespace FluentLyrics
         private TrackInfo _activeTrack = new();
         private bool _isClosing = false;
 
+        // Zero-allocation RGB Chroma cycling
+        private readonly SolidColorBrush _rgbBrush = new(Color.FromRgb(0, 240, 255));
+        private double _rgbHue = 0.0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -56,6 +60,9 @@ namespace FluentLyrics
 
             await _mediaManager.InitializeAsync();
             _syncTimer.Start();
+
+            // Background memory optimization: trim unneeded JIT setup pages after startup
+            _ = Task.Delay(1500).ContinueWith(_ => Dispatcher.Invoke(WindowHelper.TrimWorkingSet));
         }
 
         public void ApplyConfig()
@@ -119,19 +126,27 @@ namespace FluentLyrics
             TxtActiveLyric.TextAlignment = align;
             TxtNextLyric.TextAlignment = align;
 
-            // Colors
-            try
+            // Colors & RGB
+            if (_config.EnableRgbMode)
             {
-                var activeBrush = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString(_config.ActiveTextColor)!;
-                TxtActiveLyric.Foreground = activeBrush;
-                StatusDot.Fill = activeBrush;
-                if (GlowEffect != null)
-                {
-                    GlowEffect.Color = ((SolidColorBrush)activeBrush).Color;
-                    GlowEffect.Opacity = _config.EnableTextGlow ? 0.6 : 0.0;
-                }
+                TxtActiveLyric.Foreground = _rgbBrush;
+                StatusDot.Fill = _rgbBrush;
             }
-            catch { }
+            else
+            {
+                try
+                {
+                    var activeBrush = (Brush)new System.Windows.Media.BrushConverter().ConvertFromString(_config.ActiveTextColor)!;
+                    TxtActiveLyric.Foreground = activeBrush;
+                    StatusDot.Fill = activeBrush;
+                    if (GlowEffect != null)
+                    {
+                        GlowEffect.Color = ((SolidColorBrush)activeBrush).Color;
+                        GlowEffect.Opacity = _config.EnableTextGlow ? 0.6 : 0.0;
+                    }
+                }
+                catch { }
+            }
 
             try
             {
@@ -274,6 +289,10 @@ namespace FluentLyrics
                 dockItem.Checked = _config.IsTaskbarDocked;
                 contextMenu.Items.Add(dockItem);
 
+                var rgbItem = new System.Windows.Forms.ToolStripMenuItem("🌈 Modo RGB Chroma", null, (s, e) => ToggleRgbMode());
+                rgbItem.Checked = _config.EnableRgbMode;
+                contextMenu.Items.Add(rgbItem);
+
                 var oneWordItem = new System.Windows.Forms.ToolStripMenuItem("✨ Modo One Word (TikTok)", null, (s, e) => ToggleOneWord());
                 oneWordItem.Checked = _config.OneWordMode;
                 contextMenu.Items.Add(oneWordItem);
@@ -340,6 +359,8 @@ namespace FluentLyrics
 
         private void SyncTimer_Tick(object? sender, EventArgs e)
         {
+            UpdateRgbEffect();
+
             if (_currentLyrics.Count == 0 || _activeTrack.IsEmpty) return;
 
             var currentPos = _mediaManager.GetCurrentPosition(_config.TimeOffsetMs);
@@ -367,6 +388,60 @@ namespace FluentLyrics
             {
                 UpdateOneWordDisplay(currentPos);
             }
+        }
+
+        private void UpdateRgbEffect()
+        {
+            if (!_config.EnableRgbMode) return;
+
+            Color newColor;
+            if (_config.RgbModeStyle.Equals("CyberChroma", StringComparison.OrdinalIgnoreCase))
+            {
+                _rgbHue = (_rgbHue + _config.RgbSpeed * 0.75) % 360.0;
+                newColor = ColorFromHsv(_rgbHue, 1.0, 1.0);
+            }
+            else if (_config.RgbModeStyle.Equals("RandomPulse", StringComparison.OrdinalIgnoreCase))
+            {
+                _rgbHue = (_rgbHue + _config.RgbSpeed * 1.2) % 360.0;
+                newColor = ColorFromHsv(_rgbHue, 0.9, 1.0);
+            }
+            else
+            {
+                _rgbHue = (_rgbHue + _config.RgbSpeed * 0.6) % 360.0;
+                newColor = ColorFromHsv(_rgbHue, 0.95, 1.0);
+            }
+
+            _rgbBrush.Color = newColor;
+            TxtActiveLyric.Foreground = _rgbBrush;
+            StatusDot.Fill = _rgbBrush;
+
+            if (GlowEffect != null && _config.EnableTextGlow)
+            {
+                GlowEffect.Color = newColor;
+                GlowEffect.Opacity = 0.65;
+            }
+        }
+
+        private static Color ColorFromHsv(double hue, double saturation, double value)
+        {
+            int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+            double f = hue / 60 - Math.Floor(hue / 60);
+
+            value = value * 255;
+            byte v = Convert.ToByte(Math.Clamp(value, 0, 255));
+            byte p = Convert.ToByte(Math.Clamp(value * (1 - saturation), 0, 255));
+            byte q = Convert.ToByte(Math.Clamp(value * (1 - f * saturation), 0, 255));
+            byte t = Convert.ToByte(Math.Clamp(value * (1 - (1 - f) * saturation), 0, 255));
+
+            return hi switch
+            {
+                0 => Color.FromRgb(v, t, p),
+                1 => Color.FromRgb(q, v, p),
+                2 => Color.FromRgb(p, v, t),
+                3 => Color.FromRgb(p, q, v),
+                4 => Color.FromRgb(t, p, v),
+                _ => Color.FromRgb(v, p, q),
+            };
         }
 
         private void UpdateLyricDisplay()
@@ -498,6 +573,21 @@ namespace FluentLyrics
                     ? "Modo One Word (TikTok) activado." 
                     : "Modo línea completa activado.";
                 _trayIcon.ShowBalloonTip(2000, "Estilo de Letra", msg, System.Windows.Forms.ToolTipIcon.Info);
+            }
+        }
+
+        private void ToggleRgbMode()
+        {
+            _config.EnableRgbMode = !_config.EnableRgbMode;
+            ConfigService.Save(_config);
+            ApplyConfig();
+
+            if (_trayIcon != null)
+            {
+                string msg = _config.EnableRgbMode 
+                    ? "Modo RGB Chroma activado." 
+                    : "Modo color fijo activado.";
+                _trayIcon.ShowBalloonTip(2000, "Efecto RGB", msg, System.Windows.Forms.ToolTipIcon.Info);
             }
         }
 
