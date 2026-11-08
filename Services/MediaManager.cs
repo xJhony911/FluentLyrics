@@ -77,6 +77,27 @@ namespace FluentLyrics.Services
             _ = UpdateTimelineAsync();
         }
 
+        public async Task ForceRefreshAsync()
+        {
+            try
+            {
+                if (_sessionManager == null)
+                {
+                    _sessionManager = await GlobalSystemMediaTransportControlsSessionManager.RequestAsync();
+                }
+
+                if (_sessionManager != null)
+                {
+                    var session = _sessionManager.GetCurrentSession();
+                    HookSession(session);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ForceRefresh error: {ex.Message}");
+            }
+        }
+
         public async Task UpdateCurrentTrackAsync()
         {
             if (_currentSession == null)

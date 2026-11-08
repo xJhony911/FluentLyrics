@@ -12,9 +12,14 @@
     <Product>FluentLyrics</Product>
     <Company>Antigravity</Company>
     <Authors>Jonathan Acosta (xJhony911)</Authors>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <ServerGarbageCollection>false</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\logo.png" />
+    <Resource Include="Assets\icon.ico" />
+  </ItemGroup>
 
 </Project>

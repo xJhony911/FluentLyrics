@@ -191,6 +191,23 @@ namespace FluentLyrics
             WpfMessageBox.Show("Posición y modo restablecidos a flotante estándar.", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+        private void BtnRestartApp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string? exePath = Environment.ProcessPath;
+                if (!string.IsNullOrEmpty(exePath))
+                {
+                    System.Diagnostics.Process.Start(exePath);
+                    System.Windows.Application.Current.Shutdown();
+                }
+            }
+            catch (Exception ex)
+            {
+                WpfMessageBox.Show($"Error al reiniciar la aplicación: {ex.Message}", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();

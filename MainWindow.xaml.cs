@@ -335,21 +335,70 @@ namespace FluentLyrics
         {
             try
             {
-                string iconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "icon.ico");
-                System.Drawing.Icon icon = File.Exists(iconPath) 
-                    ? new System.Drawing.Icon(iconPath) 
-                    : System.Drawing.SystemIcons.Application;
+                System.Drawing.Icon? icon = null;
+                try
+                {
+                    string? exePath = Environment.ProcessPath;
+                    if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                    {
+                        icon = System.Drawing.Icon.ExtractAssociatedIcon(exePath);
+                    }
+                }
+                catch { }
+
+                if (icon == null)
+                {
+                    try
+                    {
+                        string iconPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "icon.ico");
+                        if (File.Exists(iconPath))
+                        {
+                            icon = new System.Drawing.Icon(iconPath);
+                        }
+                    }
+                    catch { }
+                }
 
                 _trayIcon = new System.Windows.Forms.NotifyIcon
                 {
-                    Icon = icon,
+                    Icon = icon ?? System.Drawing.SystemIcons.Application,
                     Text = "FluentLyrics",
                     Visible = true
                 };
 
                 var contextMenu = new System.Windows.Forms.ContextMenuStrip();
-                contextMenu.Items.Add("Mostrar / Ocultar", null, (s, e) => ToggleVisibility());
-                
+                contextMenu.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer(new DarkMenuColorTable());
+                contextMenu.BackColor = System.Drawing.Color.FromArgb(16, 20, 28);
+                contextMenu.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
+                contextMenu.ShowImageMargin = false;
+                contextMenu.Font = new System.Drawing.Font("Segoe UI", 9.5f);
+
+                void FormatItem(System.Windows.Forms.ToolStripItem itm)
+                {
+                    itm.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
+                    itm.BackColor = System.Drawing.Color.FromArgb(16, 20, 28);
+                    if (itm is System.Windows.Forms.ToolStripDropDownItem dropDown)
+                    {
+                        dropDown.DropDown.BackColor = System.Drawing.Color.FromArgb(16, 20, 28);
+                        dropDown.DropDown.ForeColor = System.Drawing.Color.FromArgb(226, 232, 240);
+                        dropDown.DropDown.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer(new DarkMenuColorTable());
+                        if (dropDown.DropDown is System.Windows.Forms.ToolStripDropDownMenu menu)
+                        {
+                            menu.ShowImageMargin = false;
+                        }
+                        foreach (System.Windows.Forms.ToolStripItem sub in dropDown.DropDownItems)
+                        {
+                            FormatItem(sub);
+                        }
+                    }
+                }
+
+                var itemShow = new System.Windows.Forms.ToolStripMenuItem("Mostrar / Ocultar", null, (s, e) => ToggleVisibility());
+                contextMenu.Items.Add(itemShow);
+
+                var itemRefresh = new System.Windows.Forms.ToolStripMenuItem("🔄 Sincronizar de nuevo", null, (s, e) => _ = RefreshPlaybackAsync());
+                contextMenu.Items.Add(itemRefresh);
+
                 var desktopItem = new System.Windows.Forms.ToolStripMenuItem("🖥️ Modo Widget de Escritorio", null, (s, e) => ToggleDesktopMode());
                 desktopItem.Checked = _config.IsDesktopWidget;
                 contextMenu.Items.Add(desktopItem);
@@ -378,11 +427,27 @@ namespace FluentLyrics
                 karaokeMenu.DropDownItems.Add(mFullLine);
                 contextMenu.Items.Add(karaokeMenu);
 
-                contextMenu.Items.Add("Bloquear posición", null, (s, e) => ToggleLock());
-                contextMenu.Items.Add("Modo Fantasma (Click-Through)", null, (s, e) => ToggleClickThrough());
+                var itemLock = new System.Windows.Forms.ToolStripMenuItem("🔒 Bloquear posición", null, (s, e) => ToggleLock());
+                contextMenu.Items.Add(itemLock);
+
+                var itemGhost = new System.Windows.Forms.ToolStripMenuItem("👻 Modo Fantasma (Click-Through)", null, (s, e) => ToggleClickThrough());
+                contextMenu.Items.Add(itemGhost);
+
                 contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
-                contextMenu.Items.Add("Ajustes...", null, (s, e) => OpenSettings());
-                contextMenu.Items.Add("Salir", null, (s, e) => ExitApp());
+
+                var itemSettings = new System.Windows.Forms.ToolStripMenuItem("⚙️ Ajustes...", null, (s, e) => OpenSettings());
+                contextMenu.Items.Add(itemSettings);
+
+                var itemRestart = new System.Windows.Forms.ToolStripMenuItem("⚡ Reiniciar FluentLyrics", null, (s, e) => RestartApp());
+                contextMenu.Items.Add(itemRestart);
+
+                var itemExit = new System.Windows.Forms.ToolStripMenuItem("✕ Salir", null, (s, e) => ExitApp());
+                contextMenu.Items.Add(itemExit);
+
+                foreach (System.Windows.Forms.ToolStripItem itm in contextMenu.Items)
+                {
+                    FormatItem(itm);
+                }
 
                 _trayIcon.ContextMenuStrip = contextMenu;
                 _trayIcon.DoubleClick += (s, e) => ToggleVisibility();
@@ -904,6 +969,67 @@ namespace FluentLyrics
             if (_config.IsClickThrough && _trayIcon != null)
             {
                 _trayIcon.ShowBalloonTip(3000, "Modo Fantasma Activado", "Los clics ahora atraviesan el widget. Puedes desactivarlo desde el icono en la barra de tareas.", System.Windows.Forms.ToolTipIcon.Info);
+            }
+        }
+
+        private async void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            await RefreshPlaybackAsync();
+        }
+
+        public async Task RefreshPlaybackAsync()
+        {
+            try
+            {
+                // Smooth rotation animation on refresh button icon
+                var spinAnim = new DoubleAnimation(0, 360, TimeSpan.FromMilliseconds(450));
+                RefreshRotate.BeginAnimation(System.Windows.Media.RotateTransform.AngleProperty, spinAnim);
+
+                _currentLineIndex = -1;
+                _lastWordIndex = -1;
+                _lastHighlightWordIndex = -1;
+
+                // Re-initialize and force GSMTC sync
+                await _mediaManager.ForceRefreshAsync();
+
+                var track = _mediaManager.GetCurrentTrack();
+                if (!track.IsEmpty)
+                {
+                    var lyrics = await _lyricsService.GetLyricsAsync(track);
+                    _currentLyrics = lyrics;
+                    UpdateLyricDisplay();
+                }
+
+                if (_config.IsTaskbarDocked)
+                {
+                    AlignToTaskbar();
+                }
+
+                if (_trayIcon != null)
+                {
+                    _trayIcon.ShowBalloonTip(1500, "FluentLyrics", "Detección y letras sincronizadas correctamente.", System.Windows.Forms.ToolTipIcon.Info);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Refresh error: {ex.Message}");
+            }
+        }
+
+        private void RestartApp()
+        {
+            try
+            {
+                string? exe = Environment.ProcessPath;
+                if (!string.IsNullOrEmpty(exe))
+                {
+                    System.Diagnostics.Process.Start(exe);
+                    System.Windows.Application.Current.Shutdown();
+                }
+            }
+            catch (Exception ex)
+            {
+                WpfMessageBox.Show($"Error al reiniciar FluentLyrics: {ex.Message}", "FluentLyrics", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

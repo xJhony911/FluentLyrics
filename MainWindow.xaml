@@ -10,6 +10,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         Topmost="True"
+        Icon="pack://application:,,,/Assets/icon.ico"
         ShowInTaskbar="False"
         ResizeMode="NoResize"
         WindowStartupLocation="Manual"
@@ -140,6 +141,14 @@
                     
                     <Button x:Name="BtnLock" Style="{StaticResource WidgetIconButton}" ToolTip="Bloquear/Desbloquear posición" Click="BtnLock_Click">
                         <TextBlock x:Name="IconLock" Text="🔓" FontSize="11"/>
+                    </Button>
+
+                    <Button x:Name="BtnRefresh" Style="{StaticResource WidgetIconButton}" ToolTip="Reiniciar / Sincronizar de nuevo" Click="BtnRefresh_Click">
+                        <TextBlock x:Name="IconRefresh" Text="🔄" FontSize="11" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <RotateTransform x:Name="RefreshRotate" Angle="0"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
                     </Button>
 
                     <Button x:Name="BtnSettings" Style="{StaticResource WidgetIconButton}" ToolTip="Ajustes y Personalización" Click="BtnSettings_Click">

@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/xJhony911/FluentLyrics/releases"><img src="https://img.shields.io/badge/Release-v1.4.0-00F0FF?style=for-the-badge&logo=github" alt="Release v1.4.0" /></a>
+  <a href="https://github.com/xJhony911/FluentLyrics/releases"><img src="https://img.shields.io/badge/Release-v1.4.1-00F0FF?style=for-the-badge&logo=github" alt="Release v1.4.1" /></a>
   <img src="https://img.shields.io/badge/.NET-9.0-purple?style=for-the-badge&logo=dotnet" alt=".NET 9" />
   <img src="https://img.shields.io/badge/Platform-Windows%2011%20%2F%2010-0078D4?style=for-the-badge&logo=windows11" alt="Windows" />
   <img src="https://img.shields.io/badge/RAM-%3C%2025%20MB-brightgreen?style=for-the-badge" alt="RAM < 25MB" />
@@ -83,11 +83,11 @@ FluentLyrics fue diseñado desde cero para ser invisible en el Administrador de 
 ## 🚀 Instalación Rápida
 
 ### Opción 1: Instalador Automático de Windows (Recomendado)
-1. Descarga [FluentLyrics-Setup-v1.4.0.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.0/FluentLyrics-Setup-v1.4.0.exe) desde la sección de **[Releases](https://github.com/xJhony911/FluentLyrics/releases)**.
+1. Descarga [FluentLyrics-Setup-v1.4.1.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics-Setup-v1.4.1.exe) desde la sección de **[Releases](https://github.com/xJhony911/FluentLyrics/releases)**.
 2. Ejecuta el instalador con un solo clic. Tienes la opción de que inicie automáticamente junto a Windows.
 
 ### Opción 2: Ejecutable Portable (Sin Instalación)
-1. Descarga el ejecutable autónomo [FluentLyrics.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.0/FluentLyrics.exe).
+1. Descarga el ejecutable autónomo [FluentLyrics.exe](https://github.com/xJhony911/FluentLyrics/releases/download/v1.4.1/FluentLyrics.exe).
 2. Guárdalo donde gustes y ejecútalo directamente. No requiere librerías adicionales ni configuración.
 
 ---
@@ -96,12 +96,13 @@ FluentLyrics fue diseñado desde cero para ser invisible en el Administrador de 
 
 | Control | Acción |
 | :--- | :--- |
+| **Botón 🔄** | **Reinicia y sincroniza al instante** la detección de Spotify/música y recarga las letras si se traba. |
 | **Botón 🖥️** | Alterna entre el **Modo Widget de Escritorio** y el modo flotante estándar. |
 | **Botón 📌** | Ancla o desancla fijamente el widget en la barra de tareas de Windows 11. |
 | **Botón 🔒** | Bloquea la posición para evitar moverlo accidentalmente con el mouse. |
 | **Botón ⚙️** | Abre el panel de personalización y ajustes visuales. |
 | **Doble clic en bandeja** | Muestra u oculta instantáneamente el widget. |
-| **Menú contextual (Bandeja)** | Acceso directo a modos de visualización (Palabra Resaltada, One Word, Frase Completa, RGB Chroma y Modo Fantasma). |
+| **Menú contextual (Bandeja)** | Menú oscuro nativo con acceso rápido a sincronización, reinicio, estilos de letra, RGB y modo fantasma. |
 
 ---
 
