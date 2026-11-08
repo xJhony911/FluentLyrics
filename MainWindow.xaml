@@ -48,16 +48,16 @@
     </Window.Resources>
 
     <Grid x:Name="RootGrid" Margin="4">
-        <!-- Main Container Card -->
+        <!-- Main Container Card (Defaults to pure transparent) -->
         <Border x:Name="CardBorder" 
                 CornerRadius="14" 
-                BorderThickness="1" 
-                BorderBrush="#33FFFFFF" 
-                Background="#D9161616"
+                BorderThickness="0" 
+                BorderBrush="Transparent" 
+                Background="Transparent"
                 Padding="12,4">
             
             <Border.Effect>
-                <DropShadowEffect x:Name="CardShadow" BlurRadius="16" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.5"/>
+                <DropShadowEffect x:Name="CardShadow" BlurRadius="16" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.0"/>
             </Border.Effect>
 
             <Grid>

@@ -211,38 +211,41 @@ namespace FluentLyrics
 
         private void ApplyThemeBackground(string theme, double opacity)
         {
-            WindowHelper.ApplyModernBackdrop(this, theme);
+            WindowHelper.ApplyModernBackdrop(this, theme, _config.ShowBorder);
+
+            if (theme.Equals("Transparent", StringComparison.OrdinalIgnoreCase) || !_config.ShowBorder)
+            {
+                // 100% PURE FLOATING TEXT: No border, no box background, no shadow on the box
+                CardBorder.Background = Brushes.Transparent;
+                CardBorder.BorderBrush = Brushes.Transparent;
+                CardBorder.BorderThickness = new Thickness(0);
+                if (CardShadow != null) CardShadow.Opacity = 0.0;
+                return;
+            }
 
             switch (theme.ToLowerInvariant())
             {
-                case "transparent":
-                    // Pure text floating: no background, no border, no shadow
-                    CardBorder.Background = Brushes.Transparent;
-                    CardBorder.BorderBrush = Brushes.Transparent;
-                    CardBorder.BorderThickness = new Thickness(0);
-                    if (CardShadow != null) CardShadow.Opacity = 0.0;
-                    break;
                 case "lightglass":
                     byte alphaLight = (byte)(opacity * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaLight, 245, 245, 245));
-                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)) : Brushes.Transparent;
-                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+                    CardBorder.BorderThickness = new Thickness(1);
                     if (CardShadow != null) CardShadow.Opacity = 0.3;
                     break;
                 case "mica":
                 case "acrylic":
                     byte alphaBlur = (byte)(Math.Max(0.2, opacity * 0.5) * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaBlur, 25, 25, 25));
-                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(50, 255, 255, 255)) : Brushes.Transparent;
-                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(50, 255, 255, 255));
+                    CardBorder.BorderThickness = new Thickness(1);
                     if (CardShadow != null) CardShadow.Opacity = 0.5;
                     break;
                 case "darkglass":
                 default:
                     byte alphaDark = (byte)(opacity * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaDark, 20, 20, 20));
-                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(40, 255, 255, 255)) : Brushes.Transparent;
-                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));
+                    CardBorder.BorderThickness = new Thickness(1);
                     if (CardShadow != null) CardShadow.Opacity = 0.5;
                     break;
             }

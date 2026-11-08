@@ -22,6 +22,9 @@ namespace FluentLyrics.Services
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
 
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref uint attrValue, int attrSize);
+
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string? lpWindowName);
 
@@ -45,7 +48,12 @@ namespace FluentLyrics.Services
 
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+        private const int DWMWA_BORDER_COLOR = 34;
         private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
+
+        private const uint DWMWA_COLOR_NONE = 0xFFFFFFFE;
+        private const int DWMWCP_DONOTROUND = 1;
+        private const int DWMWCP_ROUND = 2;
 
         public static void SetToolWindow(Window window)
         {
@@ -69,7 +77,7 @@ namespace FluentLyrics.Services
             }
         }
 
-        public static void ApplyModernBackdrop(Window window, string mode)
+        public static void ApplyModernBackdrop(Window window, string mode, bool showBorder)
         {
             try
             {
@@ -79,19 +87,33 @@ namespace FluentLyrics.Services
                 int darkMode = 1;
                 DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, sizeof(int));
 
-                // Rounded corners
-                int cornerRound = 2; // DWMWCP_ROUND
-                DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerRound, sizeof(int));
-
-                // Backdrops (Windows 11 Build 22000+)
-                int backdropType = mode switch
+                if (mode.Equals("Transparent", StringComparison.OrdinalIgnoreCase) || !showBorder)
                 {
-                    "Mica" => 2,
-                    "Acrylic" => 3,
-                    _ => 1
-                };
+                    // Completely disable DWM border and DWM corner frame
+                    uint colorNone = DWMWA_COLOR_NONE;
+                    DwmSetWindowAttribute(hwnd, DWMWA_BORDER_COLOR, ref colorNone, sizeof(uint));
 
-                DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdropType, sizeof(int));
+                    int doNotRound = DWMWCP_DONOTROUND;
+                    DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref doNotRound, sizeof(int));
+
+                    int backdropNone = 1;
+                    DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdropNone, sizeof(int));
+                }
+                else
+                {
+                    // Normal rounded corner preference
+                    int cornerRound = DWMWCP_ROUND;
+                    DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref cornerRound, sizeof(int));
+
+                    int backdropType = mode switch
+                    {
+                        "Mica" => 2,
+                        "Acrylic" => 3,
+                        _ => 1
+                    };
+
+                    DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref backdropType, sizeof(int));
+                }
             }
             catch
             {

@@ -39,7 +39,7 @@
 ## 🚀 Instalación y Uso
 
 ### Opción 1: Instalador Automático (Recomendado)
-1. Descarga `FluentLyrics-Setup-v1.2.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
+1. Descarga `FluentLyrics-Setup-v1.2.1.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
 2. Ejecuta el instalador. Puedes elegir que inicie automáticamente al encender Windows.
 
 ### Opción 2: Versión Portable
