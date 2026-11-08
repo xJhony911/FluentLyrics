@@ -12,6 +12,11 @@ namespace FluentLyrics.Models
         public bool IsLocked { get; set; } = false;
         public bool IsClickThrough { get; set; } = false;
 
+        // Customization: Pure Text / Minimalist
+        public bool ShowStatusDot { get; set; } = true;
+        public bool ShowBorder { get; set; } = true;
+        public bool OneWordMode { get; set; } = false; // TikTok word-by-word karaoke
+
         // Taskbar Integration
         public bool IsTaskbarDocked { get; set; } = false;
         public double TaskbarOffsetX { get; set; } = 220; // Distance to the left of the system tray (FluentFlyout companion)

@@ -43,6 +43,9 @@ namespace FluentLyrics
             SelectComboByTag(CmbAlignment, _config.TextAlignment);
 
             // Checkboxes
+            ChkOneWord.IsChecked = _config.OneWordMode;
+            ChkShowDot.IsChecked = _config.ShowStatusDot;
+            ChkShowBorder.IsChecked = _config.ShowBorder;
             ChkNextLine.IsChecked = _config.ShowNextLine;
             ChkGlow.IsChecked = _config.EnableTextGlow;
             ChkAutoHide.IsChecked = _config.AutoHideWhenPaused;
@@ -146,6 +149,9 @@ namespace FluentLyrics
             _config.FontSize = SliderFontSize.Value;
             _config.TextAlignment = GetSelectedTag(CmbAlignment, "Center");
 
+            _config.OneWordMode = ChkOneWord.IsChecked ?? false;
+            _config.ShowStatusDot = ChkShowDot.IsChecked ?? true;
+            _config.ShowBorder = ChkShowBorder.IsChecked ?? true;
             _config.ShowNextLine = ChkNextLine.IsChecked ?? true;
             _config.EnableTextGlow = ChkGlow.IsChecked ?? true;
             _config.AutoHideWhenPaused = ChkAutoHide.IsChecked ?? false;

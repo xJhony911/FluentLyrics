@@ -57,7 +57,7 @@
                 Padding="12,4">
             
             <Border.Effect>
-                <DropShadowEffect BlurRadius="16" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.5"/>
+                <DropShadowEffect x:Name="CardShadow" BlurRadius="16" ShadowDepth="2" Direction="270" Color="#000000" Opacity="0.5"/>
             </Border.Effect>
 
             <Grid>
@@ -67,7 +67,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Left Mini Indicator / Status Icon -->
+                <!-- Left Mini Indicator / Status Dot -->
                 <Grid x:Name="StatusDotContainer" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,8,0">
                     <Ellipse x:Name="StatusDot" Width="7" Height="7" Fill="#1DB954">
                         <Ellipse.Effect>
@@ -87,7 +87,11 @@
                                Foreground="#1DB954"
                                TextTrimming="CharacterEllipsis"
                                TextAlignment="Center"
-                               HorizontalAlignment="Stretch">
+                               HorizontalAlignment="Stretch"
+                               RenderTransformOrigin="0.5, 0.5">
+                        <TextBlock.RenderTransform>
+                            <ScaleTransform x:Name="LyricScale" ScaleX="1.0" ScaleY="1.0"/>
+                        </TextBlock.RenderTransform>
                         <TextBlock.Effect>
                             <DropShadowEffect x:Name="GlowEffect" BlurRadius="6" ShadowDepth="0" Color="#1DB954" Opacity="0.4"/>
                         </TextBlock.Effect>

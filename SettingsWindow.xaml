@@ -154,6 +154,9 @@
                 </ComboBox>
 
                 <!-- Checkboxes de Comportamiento -->
+                <CheckBox x:Name="ChkOneWord" Content="✨ Modo 'One Word' (Palabra por palabra estilo TikTok)" FontWeight="SemiBold" Foreground="#1DB954"/>
+                <CheckBox x:Name="ChkShowDot" Content="Mostrar punto indicador circular"/>
+                <CheckBox x:Name="ChkShowBorder" Content="Mostrar borde del contenedor"/>
                 <CheckBox x:Name="ChkNextLine" Content="Mostrar previsualización de la siguiente estrofa (modo flotante)"/>
                 <CheckBox x:Name="ChkGlow" Content="Efecto de resplandor / brillo en la letra activa"/>
                 <CheckBox x:Name="ChkAutoHide" Content="Ocultar automáticamente al pausar la música"/>

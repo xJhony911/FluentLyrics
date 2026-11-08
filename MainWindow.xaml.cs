@@ -15,6 +15,7 @@ using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
 using SolidColorBrush = System.Windows.Media.SolidColorBrush;
+using ScaleTransform = System.Windows.Media.ScaleTransform;
 using WpfMessageBox = System.Windows.MessageBox;
 
 namespace FluentLyrics
@@ -29,6 +30,7 @@ namespace FluentLyrics
 
         private List<LyricLine> _currentLyrics = new();
         private int _currentLineIndex = -1;
+        private int _lastWordIndex = -1;
         private TrackInfo _activeTrack = new();
         private bool _isClosing = false;
 
@@ -37,7 +39,7 @@ namespace FluentLyrics
             InitializeComponent();
             _config = ConfigService.Load();
 
-            _syncTimer.Interval = TimeSpan.FromMilliseconds(50);
+            _syncTimer.Interval = TimeSpan.FromMilliseconds(40);
             _syncTimer.Tick += SyncTimer_Tick;
 
             SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
@@ -60,14 +62,17 @@ namespace FluentLyrics
         {
             _config = ConfigService.Load();
 
+            // Status Dot
+            StatusDotContainer.Visibility = _config.ShowStatusDot ? Visibility.Visible : Visibility.Collapsed;
+
             if (_config.IsTaskbarDocked)
             {
-                // Taskbar Docked Mode: Auto-fits height, width constraint, static locked position
+                // Taskbar Docked Mode
                 AlignToTaskbar();
             }
             else
             {
-                // Free / Floating Mode: user can drag or restore position
+                // Floating Mode
                 RootGrid.Margin = new Thickness(4);
                 CardBorder.CornerRadius = new CornerRadius(14);
                 CardBorder.Padding = new Thickness(12, 4, 12, 4);
@@ -123,7 +128,7 @@ namespace FluentLyrics
                 if (GlowEffect != null)
                 {
                     GlowEffect.Color = ((SolidColorBrush)activeBrush).Color;
-                    GlowEffect.Opacity = _config.EnableTextGlow ? 0.45 : 0.0;
+                    GlowEffect.Opacity = _config.EnableTextGlow ? 0.6 : 0.0;
                 }
             }
             catch { }
@@ -146,7 +151,7 @@ namespace FluentLyrics
 
             TxtNextLyric.Opacity = _config.NextLineOpacity;
 
-            // Background & Blur
+            // Background & Border Effects
             ApplyThemeBackground(_config.ThemeMode, _config.BackgroundOpacity);
 
             // Lock icon state
@@ -160,19 +165,18 @@ namespace FluentLyrics
         {
             if (WindowHelper.GetTaskbarMetrics(this, out double tbLeft, out double tbTop, out double tbHeight, out double trayLeft))
             {
-                // 1. Auto-adjust height to taskbar (typical Windows 11 taskbar is 48px)
+                // Auto-adjust height to taskbar
                 double targetHeight = Math.Max(34, tbHeight - 8);
                 Height = targetHeight;
                 Top = tbTop + (tbHeight - targetHeight) / 2;
 
-                // 2. Width constraint to avoid overflowing or crowding open app icons
+                // Width constraint to avoid overflowing or crowding open app icons
                 double targetWidth = Math.Min(_config.TaskbarMaxWidth, Math.Max(180, _config.WindowWidth));
 
                 // Position to the left of the system tray (FluentFlyout companion placement)
                 double calculatedLeft = trayLeft - targetWidth - _config.TaskbarOffsetX;
                 if (calculatedLeft < tbLeft + 200)
                 {
-                    // If taskbar is full of apps, compress width gracefully
                     calculatedLeft = Math.Max(tbLeft + 160, calculatedLeft);
                     targetWidth = Math.Max(160, trayLeft - _config.TaskbarOffsetX - calculatedLeft);
                 }
@@ -190,7 +194,7 @@ namespace FluentLyrics
                     TxtNextLyric.Visibility = Visibility.Collapsed;
                 }
 
-                IconDock.Foreground = new SolidColorBrush(Color.FromRgb(29, 185, 84)); // Highlight green when docked
+                IconDock.Foreground = new SolidColorBrush(Color.FromRgb(29, 185, 84)); // Green when active
             }
         }
 
@@ -212,25 +216,34 @@ namespace FluentLyrics
             switch (theme.ToLowerInvariant())
             {
                 case "transparent":
-                    CardBorder.Background = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0));
+                    // Pure text floating: no background, no border, no shadow
+                    CardBorder.Background = Brushes.Transparent;
                     CardBorder.BorderBrush = Brushes.Transparent;
+                    CardBorder.BorderThickness = new Thickness(0);
+                    if (CardShadow != null) CardShadow.Opacity = 0.0;
                     break;
                 case "lightglass":
                     byte alphaLight = (byte)(opacity * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaLight, 245, 245, 245));
-                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
+                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)) : Brushes.Transparent;
+                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    if (CardShadow != null) CardShadow.Opacity = 0.3;
                     break;
                 case "mica":
                 case "acrylic":
                     byte alphaBlur = (byte)(Math.Max(0.2, opacity * 0.5) * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaBlur, 25, 25, 25));
-                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(50, 255, 255, 255));
+                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(50, 255, 255, 255)) : Brushes.Transparent;
+                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    if (CardShadow != null) CardShadow.Opacity = 0.5;
                     break;
                 case "darkglass":
                 default:
                     byte alphaDark = (byte)(opacity * 255);
                     CardBorder.Background = new SolidColorBrush(Color.FromArgb(alphaDark, 20, 20, 20));
-                    CardBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(40, 255, 255, 255));
+                    CardBorder.BorderBrush = _config.ShowBorder ? new SolidColorBrush(Color.FromArgb(40, 255, 255, 255)) : Brushes.Transparent;
+                    CardBorder.BorderThickness = _config.ShowBorder ? new Thickness(1) : new Thickness(0);
+                    if (CardShadow != null) CardShadow.Opacity = 0.5;
                     break;
             }
         }
@@ -258,6 +271,10 @@ namespace FluentLyrics
                 dockItem.Checked = _config.IsTaskbarDocked;
                 contextMenu.Items.Add(dockItem);
 
+                var oneWordItem = new System.Windows.Forms.ToolStripMenuItem("✨ Modo One Word (TikTok)", null, (s, e) => ToggleOneWord());
+                oneWordItem.Checked = _config.OneWordMode;
+                contextMenu.Items.Add(oneWordItem);
+
                 contextMenu.Items.Add("Bloquear posición", null, (s, e) => ToggleLock());
                 contextMenu.Items.Add("Modo Fantasma (Click-Through)", null, (s, e) => ToggleClickThrough());
                 contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
@@ -279,6 +296,7 @@ namespace FluentLyrics
             {
                 _activeTrack = track;
                 _currentLineIndex = -1;
+                _lastWordIndex = -1;
 
                 if (track.IsEmpty)
                 {
@@ -339,7 +357,12 @@ namespace FluentLyrics
             if (foundIndex != _currentLineIndex)
             {
                 _currentLineIndex = foundIndex;
+                _lastWordIndex = -1;
                 UpdateLyricDisplay();
+            }
+            else if (_config.OneWordMode && _currentLineIndex >= 0)
+            {
+                UpdateOneWordDisplay(currentPos);
             }
         }
 
@@ -347,6 +370,13 @@ namespace FluentLyrics
         {
             if (_currentLineIndex >= 0 && _currentLineIndex < _currentLyrics.Count)
             {
+                if (_config.OneWordMode)
+                {
+                    var currentPos = _mediaManager.GetCurrentPosition(_config.TimeOffsetMs);
+                    UpdateOneWordDisplay(currentPos);
+                    return;
+                }
+
                 string activeText = _currentLyrics[_currentLineIndex].Text;
                 if (string.IsNullOrWhiteSpace(activeText)) activeText = "♪ ♪ ♪";
 
@@ -365,9 +395,49 @@ namespace FluentLyrics
             }
         }
 
+        private void UpdateOneWordDisplay(TimeSpan currentPos)
+        {
+            if (_currentLineIndex < 0 || _currentLineIndex >= _currentLyrics.Count) return;
+
+            string lineText = _currentLyrics[_currentLineIndex].Text;
+            if (string.IsNullOrWhiteSpace(lineText))
+            {
+                TxtActiveLyric.Text = "♪ ♪ ♪";
+                TxtNextLyric.Text = "";
+                return;
+            }
+
+            var words = lineText.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            if (words.Length == 0) return;
+
+            // Line duration
+            TimeSpan lineDuration = (_currentLineIndex + 1 < _currentLyrics.Count)
+                ? (_currentLyrics[_currentLineIndex + 1].Timestamp - _currentLyrics[_currentLineIndex].Timestamp)
+                : TimeSpan.FromSeconds(3.5);
+
+            double durationMs = Math.Clamp(lineDuration.TotalMilliseconds, 800, 6000);
+            double elapsedMs = (currentPos - _currentLyrics[_currentLineIndex].Timestamp).TotalMilliseconds;
+            double progress = Math.Clamp(elapsedMs / durationMs, 0.0, 0.99);
+
+            int wordIdx = (int)(progress * words.Length);
+            wordIdx = Math.Clamp(wordIdx, 0, words.Length - 1);
+
+            if (wordIdx != _lastWordIndex)
+            {
+                _lastWordIndex = wordIdx;
+                TxtActiveLyric.Text = words[wordIdx];
+                TxtNextLyric.Text = (wordIdx + 1 < words.Length) ? words[wordIdx + 1] : "";
+
+                // TikTok Punchy Pop Scale Animation
+                var popAnim = new DoubleAnimation(1.2, 1.0, TimeSpan.FromMilliseconds(120));
+                LyricScale.BeginAnimation(ScaleTransform.ScaleXProperty, popAnim);
+                LyricScale.BeginAnimation(ScaleTransform.ScaleYProperty, popAnim);
+            }
+        }
+
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            // If docked to the taskbar, dragging is disabled so it remains completely static!
+            // If docked to taskbar, dragging is disabled to maintain static position
             if (_config.IsTaskbarDocked) return;
 
             if (!_config.IsLocked && e.ButtonState == MouseButtonState.Pressed)
@@ -408,6 +478,23 @@ namespace FluentLyrics
                     ? "FluentLyrics ahora está integrado estáticamente a la barra de tareas."
                     : "FluentLyrics ahora está en modo flotante y arrastrable.";
                 _trayIcon.ShowBalloonTip(2500, "Modo de Barra de Tareas", msg, System.Windows.Forms.ToolTipIcon.Info);
+            }
+        }
+
+        private void ToggleOneWord()
+        {
+            _config.OneWordMode = !_config.OneWordMode;
+            _lastWordIndex = -1;
+            ConfigService.Save(_config);
+            ApplyConfig();
+            UpdateLyricDisplay();
+
+            if (_trayIcon != null)
+            {
+                string msg = _config.OneWordMode 
+                    ? "Modo One Word (TikTok) activado." 
+                    : "Modo línea completa activado.";
+                _trayIcon.ShowBalloonTip(2000, "Estilo de Letra", msg, System.Windows.Forms.ToolTipIcon.Info);
             }
         }
 

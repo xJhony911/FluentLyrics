@@ -22,6 +22,8 @@
 ## ✨ Características Principales
 
 - 📌 **Modo Integrado a la Barra de Tareas (Windows 11):** Se ancla automáticamente al tamaño y altura de la barra de tareas de Windows. Permanece estático, sin riesgo de ser arrastrado por error, y adapta su ancho inteligentemente si la barra de tareas se llena de aplicaciones abiertas para nunca tapar tus programas.
+- ✨ **Modo 'One Word' (Estilo TikTok / Reels):** Muestra palabra por palabra con una animación 'pop' dinámica al ritmo exacto de la música.
+- 🪟 **Modo Minimalista / Solo Letras:** Puedes ocultar el borde exterior y el punto indicador para que queden únicamente las letras flotando sobre la barra de tareas con brillo y transparencia pura.
 - ⚡ **Ultra-ligero y Eficiente:** Desarrollado en C# .NET nativo con aceleración por hardware DWM. Nada de Electron ni navegadores embebidos pesados. Consume menos de 30 MB de memoria RAM y 0.0% de CPU en reposo.
 - 🎶 **Cero configuración de cuentas:** No necesitas crear API Keys de Spotify ni iniciar sesión en la web. Utiliza la API nativa de Windows **GSMTC** (`Windows.Media.Control`), compatible con Spotify Desktop, Spotify Web, YouTube Music y cualquier reproductor de Windows.
 - 🎤 **Letras Sincronizadas (Karaoke):** Conexión con **LRCLIB** para obtener letras sincronizadas línea a línea con interpolación de milisegundos en tiempo real.
@@ -37,7 +39,7 @@
 ## 🚀 Instalación y Uso
 
 ### Opción 1: Instalador Automático (Recomendado)
-1. Descarga `FluentLyrics-Setup-v1.1.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
+1. Descarga `FluentLyrics-Setup-v1.2.0.exe` desde la sección de [Releases](https://github.com/xJhony911/FluentLyrics/releases).
 2. Ejecuta el instalador. Puedes elegir que inicie automáticamente al encender Windows.
 
 ### Opción 2: Versión Portable
